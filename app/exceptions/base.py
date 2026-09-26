@@ -6,14 +6,6 @@ class ResourceNotFoundError(HeadhunterException):
     """Raised when a requested resource does not exist."""
 
 
-class ResourceAlreadyExistsError(HeadhunterException):
-    """Raised when a resource already exists."""
-
-
-class AuthenticationError(HeadhunterException):
-    """Raised when authentication fails."""
-
-
 class AuthorizationError(HeadhunterException):
     """Raised when a user is not authorized."""
 

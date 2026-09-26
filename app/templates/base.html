@@ -8,10 +8,22 @@
     <title>
         {% block title %}Headhunter{% endblock %}
     </title>
+
+    {% block head %}{% endblock %}
 </head>
 
 <body>
-    {% block content %}{% endblock %}
+    {% include "partials/navbar.html" %}
+
+    <main>
+        <div>
+            {% include "partials/flashes.html" %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    {% block scripts %}{% endblock %}
 </body>
 
 </html>

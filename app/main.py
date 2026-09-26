@@ -1,11 +1,17 @@
-from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
+from starlette.middleware.sessions import SessionMiddleware
+from fastapi.staticfiles import StaticFiles # Import StaticFiles
+
+from app.core.config import get_settings, BASE_DIR
+from app.exceptions.handler import authentication_exception_handler
+from app.exceptions.auth import AuthenticationError
+from app.core.templates import templates
+from app.routers import router
 
 
-BASE_DIR = Path(__file__).resolve().parent
 
+settings = get_settings()
 
 app = FastAPI(
     title="Headhunter",
@@ -16,18 +22,28 @@ app = FastAPI(
     version="0.1.0",
 )
 
-
-templates = Jinja2Templates(
-    directory=BASE_DIR / "templates"
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.secret_key,
+    session_cookie="headhunter_session",
+    max_age=60 * 60 * 24,
+    same_site="lax",
+    https_only=False,  # True in production with HTTPS
 )
 
+app.add_exception_handler(
+    AuthenticationError,
+    authentication_exception_handler,
+)
+
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
+app.include_router(router)
 
 @app.get("/")
 async def home(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="base.html",
-        context={
-            "title": "Headhunter",
-        },
+        context={"title": "Headhunter"},
     )

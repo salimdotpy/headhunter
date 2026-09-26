@@ -1,0 +1,19 @@
+<nav>
+    <a href="/">Headhunter</a>
+
+    <div>
+        {% if request.session.get("user_id") %}
+        <a href="/dashboard">Dashboard</a>
+
+        <form method="post" action="/auth/logout">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit">
+                Logout
+            </button>
+        </form>
+        {% else %}
+        <a href="/auth/login">Login</a>
+        <a href="/auth/register">Register</a>
+        {% endif %}
+    </div>
+</nav>
