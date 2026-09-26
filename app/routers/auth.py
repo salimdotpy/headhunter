@@ -1,13 +1,15 @@
+from pydantic import ValidationError
 from fastapi import APIRouter, Depends, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from app.core.csrf import validate_csrf_token
 from app.core.database import get_session
 from app.core.flash import flash
-from app.core.csrf import validate_csrf_token
 from app.core.templates import templates
 from app.exceptions.auth import AuthenticationError
 from app.exceptions.users import ResourceAlreadyExistsError
+from app.schemas.auth import RegisterRequest
 from app.services.auth import AuthService
 
 
@@ -36,18 +38,43 @@ async def login_page(request: Request):
 @router.post("/register")
 async def register(
     request: Request,
+    full_name: str = Form(...),
     email: str = Form(...),
     password: str = Form(...),
+    confirm_password: str = Form(...),
     csrf_token: str = Form(...),
     session: AsyncSession = Depends(get_session),
 ):
     validate_csrf_token(request, csrf_token)
+
+    try:
+        data = RegisterRequest(
+            full_name=full_name,
+            email=email.strip().lower(),
+            password=password,
+            confirm_password=confirm_password,
+        )
+    except ValidationError as exc:
+        message = "Please check your registration details."
+        if any(
+            "Passwords do not match." in error.get("msg", "")
+            for error in exc.errors()
+        ):
+            message = "Passwords do not match."
+
+        flash(request, message, "error")
+        return RedirectResponse(
+            url="/auth/register",
+            status_code=303,
+        )
+
     auth_service = AuthService(session)
 
     try:
         user = await auth_service.register(
-            email=email.strip().lower(),
-            password=password,
+            full_name=data.full_name,
+            email=data.email,
+            password=data.password,
         )
     except ResourceAlreadyExistsError:
         flash(
@@ -55,7 +82,6 @@ async def register(
             "An account with that email already exists.",
             "error",
         )
-
         return RedirectResponse(
             url="/auth/register",
             status_code=303,
@@ -97,7 +123,6 @@ async def login(
             "Invalid email or password.",
             "error",
         )
-
         return RedirectResponse(
             url="/auth/login",
             status_code=303,
@@ -118,8 +143,10 @@ async def login(
 
 
 @router.post("/logout")
-async def logout(request: Request, 
-    csrf_token: str = Form(...),):
+async def logout(
+    request: Request,
+    csrf_token: str = Form(...),
+):
     validate_csrf_token(request, csrf_token)
     request.session.clear()
 

@@ -12,20 +12,55 @@
 
     <form method="post" action="/auth/register">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <div>
-            <label for="email">
-                Email
-            </label>
 
-            <input id="email" name="email" type="email" required>
+        <div>
+            <label for="full_name">Full name</label>
+            <input
+                id="full_name"
+                name="full_name"
+                type="text"
+                maxlength="150"
+                autocomplete="name"
+                required
+            >
         </div>
 
         <div>
-            <label for="password">
-                Password
-            </label>
+            <label for="email">Email</label>
+            <input
+                id="email"
+                name="email"
+                type="email"
+                maxlength="255"
+                autocomplete="email"
+                required
+            >
+        </div>
 
-            <input id="password" name="password" type="password" autocomplete="new-password" required>
+        <div>
+            <label for="password">Password</label>
+            <input
+                id="password"
+                name="password"
+                type="password"
+                minlength="8"
+                maxlength="128"
+                autocomplete="new-password"
+                required
+            >
+        </div>
+
+        <div>
+            <label for="confirm_password">Confirm password</label>
+            <input
+                id="confirm_password"
+                name="confirm_password"
+                type="password"
+                minlength="8"
+                maxlength="128"
+                autocomplete="new-password"
+                required
+            >
         </div>
 
         <button type="submit">

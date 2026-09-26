@@ -12,7 +12,11 @@ class UserService:
     async def create_user(self, user: User) -> User:
         await self.users.add(user)
 
-        await self.session.commit()
-        await self.session.refresh(user)
+        try:
+            await self.session.commit()
+            await self.session.refresh(user)
+        except Exception:
+            await self.session.rollback()
+            raise
 
         return user

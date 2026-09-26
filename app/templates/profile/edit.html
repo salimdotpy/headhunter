@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile — Headhunter{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Edit your profile</h1>
+
+    <form method="post" action="/profile/edit">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <div>
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" type="text" maxlength="150"
+                   value="{{ profile.full_name }}" required>
+        </div>
+
+        <div>
+            <label for="professional_title">Professional title</label>
+            <input id="professional_title" name="professional_title" type="text"
+                   maxlength="200" value="{{ profile.professional_title }}">
+        </div>
+
+        <div>
+            <label for="summary">Professional summary</label>
+            <textarea id="summary" name="summary" maxlength="5000">{{ profile.summary }}</textarea>
+        </div>
+
+        <div>
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="text" maxlength="30"
+                   value="{{ profile.phone }}">
+            <label>
+                <input type="checkbox" name="show_phone" value="true"
+                       {% if profile.show_phone %}checked{% endif %}>
+                Show phone on public portfolio
+            </label>
+        </div>
+
+        <div>
+            <label for="location">Location</label>
+            <input id="location" name="location" type="text" maxlength="200"
+                   value="{{ profile.location }}">
+            <label>
+                <input type="checkbox" name="show_location" value="true"
+                       {% if profile.show_location %}checked{% endif %}>
+                Show location on public portfolio
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="show_email" value="true"
+                       {% if profile.show_email %}checked{% endif %}>
+                Show account email on public portfolio
+            </label>
+        </div>
+
+        <div>
+            <label for="website_url">Website URL</label>
+            <input id="website_url" name="website_url" type="url"
+                   value="{{ profile.website_url }}">
+            <label>
+                <input type="checkbox" name="show_website" value="true"
+                       {% if profile.show_website %}checked{% endif %}>
+                Show website on public portfolio
+            </label>
+        </div>
+
+        <div>
+            <label for="linkedin_url">LinkedIn URL</label>
+            <input id="linkedin_url" name="linkedin_url" type="url"
+                   value="{{ profile.linkedin_url }}">
+            <label>
+                <input type="checkbox" name="show_linkedin" value="true"
+                       {% if profile.show_linkedin %}checked{% endif %}>
+                Show LinkedIn on public portfolio
+            </label>
+        </div>
+
+        <div>
+            <label for="github_url">GitHub URL</label>
+            <input id="github_url" name="github_url" type="url"
+                   value="{{ profile.github_url }}">
+            <label>
+                <input type="checkbox" name="show_github" value="true"
+                       {% if profile.show_github %}checked{% endif %}>
+                Show GitHub on public portfolio
+            </label>
+        </div>
+
+        <button type="submit">Save profile</button>
+    </form>
+</section>
+{% endblock %}

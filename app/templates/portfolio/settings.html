@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio Settings — Headhunter{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Portfolio settings</h1>
+
+    <p>
+        Your public portfolio URL will use this unique address.
+    </p>
+
+    <p>
+        Current URL:
+        <strong>/portfolio/{{ portfolio.slug }}</strong>
+    </p>
+
+    <form method="post" action="/portfolio/settings">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <div>
+            <label for="slug">Portfolio URL</label>
+            <input
+                id="slug"
+                name="slug"
+                type="text"
+                minlength="3"
+                maxlength="100"
+                pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+                value="{{ portfolio.slug }}"
+                required
+            >
+        </div>
+
+        <button type="submit">Save portfolio URL</button>
+    </form>
+</section>
+{% endblock %}
