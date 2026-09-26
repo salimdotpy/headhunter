@@ -1,0 +1,14 @@
+:root { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #172033; background: #f6f7fb; }
+body { margin: 0; line-height: 1.6; }
+main > div { width: min(1100px, calc(100% - 2rem)); margin: 2rem auto; }
+a { color: #175cd3; }
+.portfolio-page { max-width: 900px; margin: 0 auto; }
+.portfolio-header { display: flex; gap: 2rem; align-items: center; padding: 2rem; background: white; border-radius: 1rem; }
+.portfolio-photo { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; }
+.portfolio-title { font-size: 1.2rem; }
+.portfolio-page section { margin-top: 2rem; }
+.portfolio-card { padding: 1.25rem; margin: 1rem 0; background: white; border-radius: .75rem; }
+.portfolio-skills { display: flex; flex-wrap: wrap; gap: .6rem; }
+.portfolio-skills span { padding: .45rem .8rem; background: white; border-radius: 999px; }
+.portfolio-preview-banner { padding: 1rem; margin-bottom: 1rem; background: #eef4ff; border-radius: .75rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+@media (max-width: 640px) { .portfolio-header { flex-direction: column; align-items: flex-start; } .portfolio-photo { width: 100px; height: 100px; } }

@@ -4,35 +4,36 @@
 
 {% block content %}
 <section>
-    <h1>Portfolio settings</h1>
-
-    <p>
-        Your public portfolio URL will use this unique address.
-    </p>
-
-    <p>
-        Current URL:
-        <strong>/portfolio/{{ portfolio.slug }}</strong>
-    </p>
+    <h1>Portfolio Settings</h1>
+    <p>Manage your public portfolio URL and publication status.</p>
 
     <form method="post" action="/portfolio/settings">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-
+        <label for="slug">Portfolio URL</label>
         <div>
-            <label for="slug">Portfolio URL</label>
-            <input
-                id="slug"
-                name="slug"
-                type="text"
-                minlength="3"
-                maxlength="100"
-                pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-                value="{{ portfolio.slug }}"
-                required
-            >
+            <span>/portfolio/</span>
+            <input id="slug" name="slug" value="{{ portfolio.slug }}" required>
         </div>
-
-        <button type="submit">Save portfolio URL</button>
+        <button type="submit">Save URL</button>
     </form>
+
+    <hr>
+
+    <p><strong>Status:</strong> {% if portfolio.is_published %}Published{% else %}Unpublished{% endif %}</p>
+
+    {% if portfolio.is_published %}
+        <p><a href="/portfolio/{{ portfolio.slug }}" target="_blank">View public portfolio</a></p>
+        <form method="post" action="/portfolio/unpublish">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit">Unpublish portfolio</button>
+        </form>
+    {% else %}
+        <form method="post" action="/portfolio/publish">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button type="submit">Publish portfolio</button>
+        </form>
+    {% endif %}
+
+    <p><a href="/portfolio/preview">Preview portfolio</a></p>
 </section>
 {% endblock %}

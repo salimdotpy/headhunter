@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}{{ profile.full_name }} — Portfolio{% endblock %}
+
+{% block content %}
+<div class="portfolio-page">
+    {% if is_preview %}
+        <div class="portfolio-preview-banner">
+            <strong>Portfolio Preview</strong>
+            <span>This is how your portfolio will appear publicly.</span>
+            <a href="/portfolio/settings">Portfolio settings</a>
+        </div>
+    {% endif %}
+
+    <header class="portfolio-header">
+        {% if photo_url %}
+            <img src="{{ photo_url }}" alt="{{ profile.full_name }}" class="portfolio-photo">
+        {% endif %}
+        <div>
+            <h1>{{ profile.full_name }}</h1>
+            {% if profile.professional_title %}<p class="portfolio-title">{{ profile.professional_title }}</p>{% endif %}
+            {% if profile.summary %}<p>{{ profile.summary }}</p>{% endif %}
+        </div>
+    </header>
+
+    {% if not is_preview and profile.contacts %}
+    <section>
+        <h2>Contact</h2>
+        <div class="portfolio-contacts">
+            {% for label, value, visible in profile.contacts %}
+                {% if visible and value %}
+                    <p><strong>{{ label }}:</strong> {{ value }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if education %}
+    <section>
+        <h2>Education</h2>
+        {% for item in education %}
+        <article class="portfolio-card">
+            <h3>{{ item.qualification }}</h3>
+            <p><strong>{{ item.institution }}</strong>{% if item.field_of_study %} · {{ item.field_of_study }}{% endif %}</p>
+            <p>{{ item.start_date or "" }}{% if item.end_date %} — {{ item.end_date }}{% endif %}</p>
+            {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+        </article>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if experience %}
+    <section>
+        <h2>Work Experience</h2>
+        {% for item in experience %}
+        <article class="portfolio-card">
+            <h3>{{ item.job_title }}</h3>
+            <p><strong>{{ item.company }}</strong>{% if item.location %} · {{ item.location }}{% endif %}</p>
+            <p>{{ item.start_date or "" }}{% if item.current_position %} — Present{% elif item.end_date %} — {{ item.end_date }}{% endif %}</p>
+            {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+        </article>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if skills %}
+    <section>
+        <h2>Skills</h2>
+        <div class="portfolio-skills">
+            {% for item in skills %}
+                <span>{{ item.name }}{% if item.proficiency %} · {{ item.proficiency }}{% endif %}</span>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if certifications %}
+    <section>
+        <h2>Certifications</h2>
+        {% for item in certifications %}
+        <article class="portfolio-card">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.issuer }}</p>
+            {% if item.issue_date %}<p>Issued {{ item.issue_date }}{% if item.expiry_date %} · Expires {{ item.expiry_date }}{% endif %}</p>{% endif %}
+            {% if item.credential_reference %}<p>Credential: {{ item.credential_reference }}</p>{% endif %}
+        </article>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if projects %}
+    <section>
+        <h2>Projects</h2>
+        {% for item in projects %}
+        <article class="portfolio-card">
+            <h3>{{ item.title }}</h3>
+            {% if item.role %}<p><strong>Role:</strong> {{ item.role }}</p>{% endif %}
+            {% if item.technologies %}<p><strong>Technologies:</strong> {{ item.technologies }}</p>{% endif %}
+            {% if item.project_date %}<p>{{ item.project_date }}</p>{% endif %}
+            {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+            {% if item.project_url %}<p><a href="{{ item.project_url }}" target="_blank" rel="noopener noreferrer">View project</a></p>{% endif %}
+        </article>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if documents %}
+    <section>
+        <h2>Supporting Documents & Credentials</h2>
+        <ul>
+            {% for document in documents %}
+                {% if is_preview %}
+                    <li>{{ document.original_filename }} · {{ document.category }}</li>
+                {% else %}
+                    <li><a href="/portfolio/{{ portfolio.slug }}/documents/{{ document.id }}">{{ document.original_filename }}</a> · {{ document.category }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
