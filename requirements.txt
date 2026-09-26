@@ -1,6 +1,6 @@
 fastapi[standard]
 sqlmodel
-pymysql
+asyncmy
 alembic
 pydantic-settings
 python-dotenv
