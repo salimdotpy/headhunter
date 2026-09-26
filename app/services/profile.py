@@ -5,12 +5,14 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from app.exceptions.base import ResourceNotFoundError
 from app.models.profile import Profile
 from app.repositories.profile import ProfileRepository
+from app.services.activity import ActivityService
 
 
 class ProfileService:
     def __init__(self, session: AsyncSession):
         self.session = session
         self.profiles = ProfileRepository(session)
+        self.activities = ActivityService(session)
 
     async def get_by_user_id(self, user_id: int) -> Profile:
         profile = await self.profiles.get_by_user_id(user_id)
@@ -54,6 +56,8 @@ class ProfileService:
         profile.github_url = github_url.strip()
         profile.show_github = show_github
         profile.updated_at = datetime.now(timezone.utc)
+
+        await self.activities.record(user_id, "profile.update", "Updated profile.")
 
         try:
             await self.session.commit()

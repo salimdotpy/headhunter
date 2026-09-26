@@ -5,6 +5,7 @@ from app.models.document import Document
 from app.repositories.document import DocumentRepository
 from app.repositories.cv import CertificationRepository, ProjectRepository
 from app.services.file import delete_stored_file, save_upload
+from app.services.activity import ActivityService
 
 
 class DocumentService:
@@ -13,6 +14,7 @@ class DocumentService:
         self.repo = DocumentRepository(session)
         self.certifications = CertificationRepository(session)
         self.projects = ProjectRepository(session)
+        self.activities = ActivityService(session)
 
     async def list(self, user_id: int) -> list[Document]:
         return await self.repo.list_for_user(user_id)
@@ -61,6 +63,7 @@ class DocumentService:
             file_size=file_size,
         )
         await self.repo.add(document)
+        await self.activities.record(user_id, "document.upload", f"Uploaded {original_filename}.")
         try:
             await self.session.commit()
             await self.session.refresh(document)
@@ -74,6 +77,7 @@ class DocumentService:
         document = await self.get(user_id, document_id)
         relative_path = document.file_path
         await self.repo.delete(document)
+        await self.activities.record(user_id, "document.delete", f"Deleted {document.original_filename}.")
         try:
             await self.session.commit()
         except Exception:

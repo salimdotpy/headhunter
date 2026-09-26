@@ -18,6 +18,7 @@ from app.repositories.document import DocumentRepository
 from app.repositories.portfolio import PortfolioRepository
 from app.repositories.profile import ProfileRepository
 from app.repositories.user import UserRepository
+from app.services.activity import ActivityService
 
 
 def slugify(value: str) -> str:
@@ -46,6 +47,7 @@ class PortfolioService:
         self.certifications = CertificationRepository(session)
         self.projects = ProjectRepository(session)
         self.documents = DocumentRepository(session)
+        self.activities = ActivityService(session)
 
     async def get_by_user_id(self, user_id: int) -> Portfolio:
         portfolio = await self.portfolios.get_by_user_id(user_id)
@@ -77,6 +79,10 @@ class PortfolioService:
 
         portfolio.slug = normalized_slug
         portfolio.updated_at = datetime.now(timezone.utc)
+
+        await self.activities.record(user_id, "portfolio.slug", "Updated portfolio link.")
+
+        await self.activities.record(user_id, "portfolio.publish" if published else "portfolio.unpublish", "Published portfolio." if published else "Unpublished portfolio.")
 
         try:
             await self.session.commit()

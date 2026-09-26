@@ -1,3 +1,4 @@
+from app.models.activity import Activity
 from app.models.certification import Certification
 from app.models.document import Document
 from app.models.education import Education
@@ -9,6 +10,7 @@ from app.models.skill import Skill
 from app.models.user import User
 
 __all__ = [
+    "Activity",
     "Certification",
     "Document",
     "Education",

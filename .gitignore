@@ -1,44 +1,11 @@
-# Python
-*__pycache__
 __pycache__/
 *.py[cod]
-*.pyo
-
-# Virtual environment
 .venv/
-
-# Environment variables
+venv/
 .env
-# .env.*
-
-# IDE
-.vscode/
-.idea/
-
-# Operating system
-.DS_Store
-Thumbs.db
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Application uploads
 uploads/*
 !uploads/.gitkeep
-!uploads/profiles/.gitkeep
-!uploads/certificates/.gitkeep
-!uploads/projects/.gitkeep
-!uploads/documents/.gitkeep
-
-# Node
-node_modules/
-
-# Generated frontend assets
-app/static/css/output.css
-
-# Build
-dist/
-build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 headhunter.zip
