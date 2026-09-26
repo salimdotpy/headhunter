@@ -3,6 +3,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.database import get_session
 from app.exceptions.auth import AuthenticationError
+from app.exceptions.base import AuthorizationError
 from app.models.user import User
 from app.repositories.user import UserRepository
 
@@ -25,3 +26,8 @@ async def get_current_user(
         raise AuthenticationError("Authentication required.")
 
     return user
+
+async def get_current_admin(current_user: User = Depends(get_current_user)) -> User:
+    if current_user.role != "admin":
+        raise AuthorizationError("Administrator access required.")
+    return current_user

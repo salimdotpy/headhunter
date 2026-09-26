@@ -88,6 +88,7 @@ async def register(
         )
 
     request.session["user_id"] = user.id
+    request.session["role"] = user.role
 
     flash(
         request,
@@ -129,6 +130,7 @@ async def login(
         )
 
     request.session["user_id"] = user.id
+    request.session["role"] = user.role
 
     flash(
         request,

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — Headhunter{% endblock %}
+{% block content %}
+<section class="dashboard-page">
+<header class="page-header"><div><p class="eyebrow">Administration</p><h1>Admin Dashboard</h1><p>Monitor users, portfolios, documents, and platform activity.</p></div></header>
+<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
+<section class="stats-grid">
+<a class="stat-card" href="/admin/users"><span>Total users</span><strong>{{ total_users }}</strong></a>
+<a class="stat-card" href="/admin/users?status=active"><span>Active users</span><strong>{{ active_users }}</strong></a>
+<a class="stat-card" href="/admin/portfolios"><span>Published portfolios</span><strong>{{ published_portfolios }}</strong></a>
+<a class="stat-card" href="/admin/activity"><span>Uploaded documents</span><strong>{{ uploaded_documents }}</strong></a>
+</section>
+<section class="panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Latest platform activity.</p></div></div>
+{% if recent_activity %}<ul class="activity-list">{% for item in recent_activity %}<li><strong>{{ item.description }}</strong><time>{{ item.created_at.strftime('%d %b %Y, %H:%M') }}</time></li>{% endfor %}</ul>{% else %}<p class="empty-state">No activity recorded yet.</p>{% endif %}
+</section>
+</section>
+{% endblock %}

@@ -8,6 +8,8 @@ from app.models.profile import Profile
 from app.models.project import Project
 from app.models.skill import Skill
 from app.models.user import User
+from app.models.website_content import WebsiteContent
+from app.models.platform_setting import PlatformSetting
 
 __all__ = [
     "Activity",
@@ -20,4 +22,6 @@ __all__ = [
     "Project",
     "Skill",
     "User",
+    "WebsiteContent",
+    "PlatformSetting",
 ]

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Settings — Admin{% endblock %}
+{% block content %}
+<section class="dashboard-page"><header class="page-header"><div><p class="eyebrow">Administration</p><h1>Settings</h1></div></header>
+<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
+<form class="panel form-stack" method="post" action="/admin/settings"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><h2>Add platform setting</h2><label>Key<input name="key" required maxlength="100"></label><label>Value<input name="value" maxlength="2000"></label><button class="button button-primary">Save setting</button></form>
+{% for item in settings %}<form class="panel form-stack" method="post" action="/admin/settings/{{ item.id }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Key<input name="key" value="{{ item.setting_key }}" required></label><label>Value<input name="value" value="{{ item.setting_value }}"></label><button class="button">Update</button></form>{% else %}<p class="empty-state">No platform settings configured.</p>{% endfor %}
+</section>
+{% endblock %}

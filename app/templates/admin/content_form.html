@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Website Content — Admin{% endblock %}
+{% block content %}
+<section class="form-page"><h1>{% if record %}Edit{% else %}Add{% endif %} Website Content</h1>
+<form class="panel form-stack" method="post" action="{{ action }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Content key<input name="key" required maxlength="100" value="{{ record.content_key if record else '' }}"></label>
+<label>Title<input name="title" maxlength="200" value="{{ record.title if record else '' }}"></label>
+<label>Body<textarea name="body" rows="12" maxlength="10000">{{ record.body if record else '' }}</textarea></label>
+<label><input type="checkbox" name="is_published" value="true" {% if not record or record.is_published %}checked{% endif %}> Published</label>
+<button class="button button-primary" type="submit">Save</button></form></section>
+{% endblock %}

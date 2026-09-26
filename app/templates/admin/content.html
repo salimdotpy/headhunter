@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Website Content — Admin{% endblock %}
+{% block content %}
+<section class="dashboard-page"><header class="page-header"><div><p class="eyebrow">Administration</p><h1>Website Content</h1></div><a class="button button-primary" href="/admin/content/new">Add content</a></header>
+<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
+<section class="panel"><div class="table-wrap"><table><thead><tr><th>Key</th><th>Title</th><th>Status</th><th>Action</th></tr></thead><tbody>{% for item in content %}<tr><td>{{ item.content_key }}</td><td>{{ item.title }}</td><td>{% if item.is_published %}Published{% else %}Draft{% endif %}</td><td><a href="/admin/content/{{ item.id }}/edit">Edit</a></td></tr>{% else %}<tr><td colspan="4">No website content entries yet.</td></tr>{% endfor %}</tbody></table></div></section></section>
+{% endblock %}

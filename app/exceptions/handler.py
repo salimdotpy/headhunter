@@ -19,3 +19,9 @@ async def authentication_exception_handler(
         url="/auth/login",
         status_code=303,
     )
+
+from app.exceptions.base import AuthorizationError
+
+async def authorization_exception_handler(request: Request, exc: AuthorizationError):
+    flash(request, "You do not have permission to access that page.", "error")
+    return RedirectResponse(url="/dashboard", status_code=303)

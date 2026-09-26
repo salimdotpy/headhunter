@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Users — Admin{% endblock %}
+{% block content %}
+<section class="dashboard-page"><header class="page-header"><div><p class="eyebrow">Administration</p><h1>Users</h1></div></header>
+<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
+<form class="panel admin-filter" method="get"><label>Search email<input name="search" value="{{ search }}"></label><label>Status<select name="status"><option value="">All</option><option value="active" {% if status=="active" %}selected{% endif %}>Active</option><option value="inactive" {% if status=="inactive" %}selected{% endif %}>Inactive</option></select></label><button class="button button-primary">Filter</button></form>
+<section class="panel"><div class="table-wrap"><table><thead><tr><th>Email</th><th>Registered</th><th>Role</th><th>Status</th><th>Action</th></tr></thead><tbody>
+{% for user in users %}<tr><td>{{ user.email }}</td><td>{{ user.created_at.strftime('%d %b %Y') }}</td><td>{{ user.role }}</td><td>{% if user.is_active %}Active{% else %}Inactive{% endif %}</td><td>{% if user.id != admin.id %}<form method="post" action="/admin/users/{{ user.id }}/status"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="is_active" value="{{ 'false' if user.is_active else 'true' }}"><button class="button" type="submit">{% if user.is_active %}Deactivate{% else %}Activate{% endif %}</button></form>{% else %}Current admin{% endif %}</td></tr>{% else %}<tr><td colspan="5">No users found.</td></tr>{% endfor %}
+</tbody></table></div></section></section>
+{% endblock %}

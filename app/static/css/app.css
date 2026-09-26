@@ -12,3 +12,11 @@ a { color: #175cd3; }
 .portfolio-skills span { padding: .45rem .8rem; background: white; border-radius: 999px; }
 .portfolio-preview-banner { padding: 1rem; margin-bottom: 1rem; background: #eef4ff; border-radius: .75rem; display: flex; gap: 1rem; flex-wrap: wrap; }
 @media (max-width: 640px) { .portfolio-header { flex-direction: column; align-items: flex-start; } .portfolio-photo { width: 100px; height: 100px; } }
+
+.admin-nav { display:flex; flex-wrap:wrap; gap:.75rem; margin:1rem 0 1.5rem; padding:.75rem 1rem; background:white; border-radius:.75rem; }
+.admin-nav a { text-decoration:none; font-weight:600; }
+.admin-filter { display:flex; gap:1rem; align-items:end; flex-wrap:wrap; margin-bottom:1rem; }
+.admin-filter label { display:flex; flex-direction:column; gap:.35rem; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; }
+th, td { text-align:left; padding:.75rem; border-bottom:1px solid #e5e7eb; vertical-align:top; }

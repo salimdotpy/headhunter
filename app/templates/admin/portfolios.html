@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Portfolios — Admin{% endblock %}
+{% block content %}
+<section class="dashboard-page"><header class="page-header"><div><p class="eyebrow">Administration</p><h1>Portfolios</h1></div></header>
+<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
+<section class="panel"><div class="table-wrap"><table><thead><tr><th>Owner ID</th><th>Slug</th><th>Status</th><th>Updated</th><th>Public</th></tr></thead><tbody>{% for p in portfolios %}<tr><td>{{ p.user_id }}</td><td>{{ p.slug }}</td><td>{% if p.is_published %}Published{% else %}Unpublished{% endif %}</td><td>{{ p.updated_at.strftime('%d %b %Y, %H:%M') }}</td><td>{% if p.is_published %}<a href="/portfolio/{{ p.slug }}" target="_blank" rel="noopener">View</a>{% else %}Private{% endif %}</td></tr>{% else %}<tr><td colspan="5">No portfolios found.</td></tr>{% endfor %}</tbody></table></div></section></section>
+{% endblock %}

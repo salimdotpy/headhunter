@@ -4,6 +4,7 @@
     <div>
         {% if request.session.get("user_id") %}
         <a href="/dashboard">Dashboard</a>
+        {% if request.session.get("role") == "admin" %}<a href="/admin">Admin</a>{% endif %}
         <a href="/profile/edit">Profile</a>
         <a href="/education">Education</a>
         <a href="/experience">Experience</a>
