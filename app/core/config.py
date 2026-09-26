@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     secret_key: str
 
     database_url: str
+    upload_dir: str = "uploads"
 
     model_config = SettingsConfigDict(
         env_file=".env",

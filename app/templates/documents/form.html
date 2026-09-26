@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Upload Document — Headhunter{% endblock %}
+{% block content %}
+<section>
+    <h1>Upload document</h1>
+    <p>Maximum file size: 10 MB. Allowed: PDF, Word documents, JPG, PNG, and WebP.</p>
+
+    <form method="post" action="/documents/new" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            <option value="">Select a category</option>
+            {% for value, label in categories %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="upload">File</label>
+        <input id="upload" type="file" name="upload" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" required>
+
+        <label for="certification_id">Certification ID (optional)</label>
+        <input id="certification_id" type="number" name="certification_id" min="1">
+
+        <label for="project_id">Project ID (optional)</label>
+        <input id="project_id" type="number" name="project_id" min="1">
+
+        <button type="submit">Upload</button>
+        <a href="/documents">Cancel</a>
+    </form>
+</section>
+{% endblock %}
