@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit Experience" if record else "Add Experience" }} — Headhunter{% endblock %}
+{% block content %}
+<h1>{{ "Edit Experience" if record else "Add Experience" }}</h1>
+<form method="post" action="{{ action }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Job title <input name="job_title" required maxlength="200" value="{{ record.job_title if record else '' }}"></label>
+<label>Company <input name="company" required maxlength="200" value="{{ record.company if record else '' }}"></label>
+<label>Location <input name="location" maxlength="200" value="{{ record.location if record else '' }}"></label>
+<label>Start date <input type="date" name="start_date" value="{{ record.start_date if record and record.start_date else '' }}"></label>
+<label>End date <input type="date" name="end_date" value="{{ record.end_date if record and record.end_date else '' }}"></label>
+<label><input type="checkbox" name="is_current" value="true" {% if record and record.is_current %}checked{% endif %}> Current position</label>
+<label>Description <textarea name="description" maxlength="5000">{{ record.description if record else '' }}</textarea></label>
+<button type="submit">Save experience</button> <a href="/experience">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit Certification" if record else "Add Certification" }} — Headhunter{% endblock %}
+{% block content %}
+<h1>{{ "Edit Certification" if record else "Add Certification" }}</h1>
+<form method="post" action="{{ action }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Certification name <input name="name" required maxlength="200" value="{{ record.name if record else '' }}"></label>
+<label>Issuer <input name="issuer" required maxlength="200" value="{{ record.issuer if record else '' }}"></label>
+<label>Issue date <input type="date" name="issue_date" value="{{ record.issue_date if record and record.issue_date else '' }}"></label>
+<label>Expiry date <input type="date" name="expiry_date" value="{{ record.expiry_date if record and record.expiry_date else '' }}"></label>
+<label>Credential/reference <input name="credential_reference" maxlength="200" value="{{ record.credential_reference if record else '' }}"></label>
+<button type="submit">Save certification</button> <a href="/certifications">Cancel</a>
+</form>
+{% endblock %}

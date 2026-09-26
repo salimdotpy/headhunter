@@ -1,5 +1,19 @@
+from app.models.certification import Certification
+from app.models.education import Education
+from app.models.experience import Experience
 from app.models.portfolio import Portfolio
 from app.models.profile import Profile
+from app.models.project import Project
+from app.models.skill import Skill
 from app.models.user import User
 
-__all__ = ["Portfolio", "Profile", "User"]
+__all__ = [
+    "Certification",
+    "Education",
+    "Experience",
+    "Portfolio",
+    "Profile",
+    "Project",
+    "Skill",
+    "User",
+]

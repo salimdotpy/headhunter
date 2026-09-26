@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Certifications — Headhunter{% endblock %}
+{% block content %}
+<h1>Certifications</h1><p><a href="/dashboard">Dashboard</a> · <a href="/certifications/new">Add certification</a></p>
+{% if records %}{% for record in records %}<article>
+<h2>{{ record.name }}</h2><p>Issued by {{ record.issuer }}</p>
+{% if record.issue_date %}<p>Issued: {{ record.issue_date }}{% endif %}{% if record.expiry_date %} · Expires: {{ record.expiry_date }}{% endif %}</p>
+{% if record.credential_reference %}<p>Credential: {{ record.credential_reference }}</p>{% endif %}
+<a href="/certifications/{{ record.id }}/edit">Edit</a>
+<form method="post" action="/certifications/{{ record.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" onclick="return confirm('Delete this certification?')">Delete</button></form>
+</article>{% endfor %}{% else %}<p>No certifications added yet.</p>{% endif %}
+{% endblock %}

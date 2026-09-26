@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Projects — Headhunter{% endblock %}
+{% block content %}
+<h1>Projects</h1><p><a href="/dashboard">Dashboard</a> · <a href="/projects/new">Add project</a></p>
+{% if records %}{% for record in records %}<article>
+<h2>{{ record.title }}</h2>
+{% if record.role %}<p>Role: {{ record.role }}</p>{% endif %}
+{% if record.project_date %}<p>Date: {{ record.project_date }}</p>{% endif %}
+{% if record.technologies %}<p>Technologies: {{ record.technologies }}</p>{% endif %}
+{% if record.description %}<p>{{ record.description }}</p>{% endif %}
+{% if record.project_url %}<p><a href="{{ record.project_url }}" target="_blank" rel="noopener">Project link</a></p>{% endif %}
+<a href="/projects/{{ record.id }}/edit">Edit</a>
+<form method="post" action="/projects/{{ record.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" onclick="return confirm('Delete this project?')">Delete</button></form>
+</article>{% endfor %}{% else %}<p>No projects added yet.</p>{% endif %}
+{% endblock %}

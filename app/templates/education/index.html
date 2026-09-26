@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Education — Headhunter{% endblock %}
+{% block content %}
+<h1>Education</h1>
+<p><a href="/dashboard">Dashboard</a> · <a href="/education/new">Add education</a></p>
+{% if records %}
+{% for record in records %}
+<article>
+    <h2>{{ record.qualification }} — {{ record.institution }}</h2>
+    {% if record.field_of_study %}<p>{{ record.field_of_study }}</p>{% endif %}
+    <p>{{ record.start_date or "" }}{% if record.end_date %} — {{ record.end_date }}{% endif %}</p>
+    {% if record.description %}<p>{{ record.description }}</p>{% endif %}
+    <a href="/education/{{ record.id }}/edit">Edit</a>
+    <form method="post" action="/education/{{ record.id }}/delete" style="display:inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button type="submit" onclick="return confirm('Delete this education record?')">Delete</button>
+    </form>
+</article>
+{% endfor %}
+{% else %}<p>No education records yet. Add your education history to build your CV.</p>{% endif %}
+{% endblock %}

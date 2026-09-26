@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Work Experience — Headhunter{% endblock %}
+{% block content %}
+<h1>Work Experience</h1><p><a href="/dashboard">Dashboard</a> · <a href="/experience/new">Add experience</a></p>
+{% if records %}{% for record in records %}<article>
+<h2>{{ record.job_title }} — {{ record.company }}</h2>
+{% if record.location %}<p>{{ record.location }}</p>{% endif %}
+<p>{{ record.start_date or "" }} — {{ "Present" if record.is_current else (record.end_date or "") }}</p>
+{% if record.description %}<p>{{ record.description }}</p>{% endif %}
+<a href="/experience/{{ record.id }}/edit">Edit</a>
+<form method="post" action="/experience/{{ record.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" onclick="return confirm('Delete this work experience?')">Delete</button></form>
+</article>{% endfor %}{% else %}<p>No work experience records yet.</p>{% endif %}
+{% endblock %}

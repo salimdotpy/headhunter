@@ -4,12 +4,17 @@
     <div>
         {% if request.session.get("user_id") %}
         <a href="/dashboard">Dashboard</a>
+        <a href="/profile/edit">Profile</a>
+        <a href="/education">Education</a>
+        <a href="/experience">Experience</a>
+        <a href="/skills">Skills</a>
+        <a href="/certifications">Certifications</a>
+        <a href="/projects">Projects</a>
+        <a href="/portfolio/settings">Portfolio</a>
 
         <form method="post" action="/auth/logout">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <button type="submit">
-                Logout
-            </button>
+            <button type="submit">Logout</button>
         </form>
         {% else %}
         <a href="/auth/login">Login</a>

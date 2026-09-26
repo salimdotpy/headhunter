@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Skills — Headhunter{% endblock %}
+{% block content %}
+<h1>Skills</h1><p><a href="/dashboard">Dashboard</a> · <a href="/skills/new">Add skill</a></p>
+{% if records %}<ul>{% for record in records %}<li><strong>{{ record.name }}</strong>{% if record.proficiency %} — {{ record.proficiency }}{% endif %} · <a href="/skills/{{ record.id }}/edit">Edit</a>
+<form method="post" action="/skills/{{ record.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" onclick="return confirm('Delete this skill?')">Delete</button></form></li>{% endfor %}</ul>{% else %}<p>No skills added yet.</p>{% endif %}
+{% endblock %}

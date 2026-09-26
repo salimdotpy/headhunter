@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit Education" if record else "Add Education" }} — Headhunter{% endblock %}
+{% block content %}
+<h1>{{ "Edit Education" if record else "Add Education" }}</h1>
+<form method="post" action="{{ action }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Institution <input name="institution" required maxlength="200" value="{{ record.institution if record else '' }}"></label>
+<label>Qualification / Degree <input name="qualification" required maxlength="200" value="{{ record.qualification if record else '' }}"></label>
+<label>Field of study <input name="field_of_study" maxlength="200" value="{{ record.field_of_study if record else '' }}"></label>
+<label>Start date <input type="date" name="start_date" value="{{ record.start_date if record and record.start_date else '' }}"></label>
+<label>End date <input type="date" name="end_date" value="{{ record.end_date if record and record.end_date else '' }}"></label>
+<label>Description <textarea name="description" maxlength="5000">{{ record.description if record else '' }}</textarea></label>
+<button type="submit">Save education</button>
+<a href="/education">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit Project" if record else "Add Project" }} — Headhunter{% endblock %}
+{% block content %}
+<h1>{{ "Edit Project" if record else "Add Project" }}</h1>
+<form method="post" action="{{ action }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Project title <input name="title" required maxlength="200" value="{{ record.title if record else '' }}"></label>
+<label>Description <textarea name="description" maxlength="5000">{{ record.description if record else '' }}</textarea></label>
+<label>Your role <input name="role" maxlength="200" value="{{ record.role if record else '' }}"></label>
+<label>Technologies / tools <input name="technologies" maxlength="1000" placeholder="e.g. FastAPI, MariaDB, Tailwind CSS" value="{{ record.technologies if record else '' }}"></label>
+<label>Date <input type="date" name="project_date" value="{{ record.project_date if record and record.project_date else '' }}"></label>
+<label>Project link <input type="url" name="project_url" value="{{ record.project_url if record else '' }}"></label>
+<button type="submit">Save project</button> <a href="/projects">Cancel</a>
+</form>
+{% endblock %}
