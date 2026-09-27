@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@plugin "@iconify/tailwind4";
+
+@utility cbtn-primary {
+  @apply inline-flex cursor-pointer justify-center items-center px-4 py-2 border text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors border-transparent text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500;
+}
+
+@utility cbtn-secondary {
+  @apply inline-flex cursor-pointer justify-center items-center px-4 py-2 border text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-blue-500;
+}
+
+@utility cbtn-danger {
+  @apply inline-flex cursor-pointer justify-center items-center px-4 py-2 border text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors border-transparent text-white bg-red-600 hover:bg-red-700 focus:ring-red-500;
+}
+
+@utility cbtn-ghost {
+  @apply inline-flex cursor-pointer justify-center items-center px-4 py-2 border text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors border-transparent text-blue-600 bg-transparent hover:bg-blue-50 shadow-none focus:ring-blue-500;
+}
+
+
+[data-theme="light"],  :root {
+  
+  --color-primary: #155dfc;         /* Native btn-primary uses this (Blue 600) */
+  --color-primary-content: #ffffff; /* Native text inside btn-primary */
+  
+  --color-secondary: #4b5563;       /* Native btn-secondary uses this (Gray 600) */
+  --color-secondary-content: #ffffff;
+  
+  --color-error: #dc2626;           /* Native btn-error/btn-danger uses this (Red 600) */
+  --color-error-content: #ffffff;
+}

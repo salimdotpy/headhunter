@@ -10,3 +10,7 @@ uploads/*
 .ruff_cache/
 headhunter.zip
 headhunter_milestone6.zip
+headhunter_milestone7.zip
+node_modules
+backup
+app/static/css/app1.css

@@ -1,29 +1,26 @@
+{% from "partials/macros.html" import app_logo %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>
-        {% block title %}Headhunter{% endblock %}
-    </title>
-
-    <link rel="stylesheet" href="/static/css/app.css">
+    <meta name="description" content="Headhunter — create, manage, present, and share your professional CV portfolio.">
+    <title>{% block title %}Headhunter{% endblock %}</title>
+    <link href="{{ url_for('static', path='/css/app.css') }}" rel="stylesheet">
     {% block head %}{% endblock %}
 </head>
 
 <body>
-    {% include "partials/navbar.html" %}
-
-    <main>
+    <div class="min-h-screen bg-white flex flex-col font-sans selection:bg-blue-100 selection:text-blue-900">
+        <header class="site-header">
+            {% include "partials/navbar.html" %}
+        </header>
         <div>
             {% include "partials/flashes.html" %}
-
             {% block content %}{% endblock %}
         </div>
-    </main>
-
+    </div>
     {% block scripts %}{% endblock %}
 </body>
 

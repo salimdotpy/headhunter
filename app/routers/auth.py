@@ -5,6 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from app.core.csrf import validate_csrf_token
 from app.core.database import get_session
+from app.core.dependencies import get_current_user
 from app.core.flash import flash
 from app.core.templates import templates
 from app.exceptions.auth import AuthenticationError
@@ -162,3 +163,115 @@ async def logout(
         url="/auth/login",
         status_code=303,
     )
+
+
+@router.get("/forgot-password")
+async def forgot_password_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="auth/forgot_password.html",
+    )
+
+
+@router.post("/forgot-password")
+async def forgot_password(
+    request: Request,
+    email: str = Form(...),
+    csrf_token: str = Form(...),
+    session: AsyncSession = Depends(get_session),
+):
+    validate_csrf_token(request, csrf_token)
+    from app.services.password_reset import PasswordResetService
+    await PasswordResetService(session).request_reset(email.strip().lower())
+    flash(
+        request,
+        "If an active account uses that email, password reset instructions have been sent.",
+        "success",
+    )
+    return RedirectResponse("/auth/login", status_code=303)
+
+
+@router.get("/reset-password")
+async def reset_password_page(request: Request, token: str = ""):
+    return templates.TemplateResponse(
+        request=request,
+        name="auth/reset_password.html",
+        context={"token": token},
+    )
+
+
+@router.post("/reset-password")
+async def reset_password(
+    request: Request,
+    token: str = Form(...),
+    new_password: str = Form(...),
+    confirm_password: str = Form(...),
+    csrf_token: str = Form(...),
+    session: AsyncSession = Depends(get_session),
+):
+    validate_csrf_token(request, csrf_token)
+    try:
+        from app.schemas.auth import PasswordResetConfirmRequest
+        data = PasswordResetConfirmRequest(
+            token=token,
+            new_password=new_password,
+            confirm_password=confirm_password,
+        )
+        from app.services.password_reset import PasswordResetService
+        await PasswordResetService(session).reset_password(data.token, data.new_password)
+    except ValidationError:
+        flash(request, "Please check the password fields.", "error")
+        return RedirectResponse(f"/auth/reset-password?token={token}", status_code=303)
+    except AuthenticationError as exc:
+        flash(request, str(exc), "error")
+        return RedirectResponse("/auth/forgot-password", status_code=303)
+
+    request.session.clear()
+    flash(request, "Your password has been reset. Please sign in.", "success")
+    return RedirectResponse("/auth/login", status_code=303)
+
+
+@router.get("/change-password")
+async def change_password_page(
+    request: Request,
+    current_user=Depends(get_current_user),
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="auth/change_password.html",
+        context={"current_user": current_user},
+    )
+
+
+@router.post("/change-password")
+async def change_password(
+    request: Request,
+    current_password: str = Form(...),
+    new_password: str = Form(...),
+    confirm_password: str = Form(...),
+    csrf_token: str = Form(...),
+    current_user=Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    validate_csrf_token(request, csrf_token)
+    try:
+        from app.schemas.auth import PasswordChangeRequest
+        data = PasswordChangeRequest(
+            current_password=current_password,
+            new_password=new_password,
+            confirm_password=confirm_password,
+        )
+        from app.services.password_reset import PasswordChangeService
+        await PasswordChangeService(session).change_password(
+            current_user.id, data.current_password, data.new_password
+        )
+    except ValidationError:
+        flash(request, "Please check the password fields.", "error")
+        return RedirectResponse("/auth/change-password", status_code=303)
+    except AuthenticationError as exc:
+        flash(request, str(exc), "error")
+        return RedirectResponse("/auth/change-password", status_code=303)
+
+    request.session.clear()
+    flash(request, "Your password has been changed. Please sign in again.", "success")
+    return RedirectResponse("/auth/login", status_code=303)

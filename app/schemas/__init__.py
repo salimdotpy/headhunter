@@ -16,3 +16,4 @@ __all__ = [
     "RegisterRequest",
     "SkillRequest",
 ]
+from app.schemas.auth import PasswordChangeRequest, PasswordResetRequest, PasswordResetConfirmRequest

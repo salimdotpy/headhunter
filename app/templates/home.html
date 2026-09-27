@@ -1,0 +1,479 @@
+{% extends "base.html" %}
+{% block title %}Headhunter — Your Professional CV Portfolio{% endblock %}
+{% block content %}
+
+<main class="flex-grow pt-16">
+
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-24 lg:pt-32 lg:pb-40 overflow-hidden bg-slate-50">
+
+        <div class="absolute inset-y-0 right-0 w-1/2 bg-blue-50/50 rounded-l-full blur-3xl opacity-60"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+
+                <div class="max-w-2xl">
+
+                    <div
+                        class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-6">
+                        <span class="icon-[lucide--star] size-4 mr-2"></span>
+                        The modern way to present your career
+                    </div>
+
+                    <h1 class="text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
+                        Your Professional
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                            CV Portfolio
+                        </span>
+                        , Perfected.
+                    </h1>
+
+                    <p class="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed">
+                        Create, manage, and share your digital resume and supporting
+                        documents in one secure place. Stand out to top employers with a
+                        beautifully designed, accessible portfolio link.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+
+                        <a href="{{ url_for('register_page' ) }}"
+                            class="cbtn-primary text-lg px-8 py-3 shadow-xl shadow-blue-500/20">
+                            Build Your CV Now
+                            <span class="icon-[lucide--chevron-right] size-5 ml-2"></span>
+                        </a>
+
+                        <a href="{{ url_for('login_page' ) }}"
+                            class="cbtn-secondary text-lg px-8 py-3 bg-white shadow-sm">
+                            View Demo
+                        </a>
+
+                    </div>
+
+                    <div class="mt-8 flex items-center gap-4 text-sm text-slate-500">
+
+                        <span class="flex items-center">
+                            <span class="icon-[lucide--circle-check] size-4 text-green-500 mr-1"></span>
+                            Free to start
+                        </span>
+
+                        <span class="flex items-center">
+                            <span class="icon-[lucide--circle-check] size-4 text-green-500 mr-1"></span>
+                            No credit card
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="relative mx-auto w-full max-w-lg lg:max-w-none">
+
+                    <div
+                        class="relative rounded-2xl shadow-2xl bg-white p-2 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+
+                        <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2070&auto=format&fit=crop"
+                            alt="Professional reviewing a digital portfolio" class="rounded-xl w-full object-cover">
+
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-slate-100 flex items-center gap-4 animate-bounce"
+                            style="animation-duration: 3s;">
+
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <span class="icon-[lucide--check] size-6 text-green-600"></span>
+                            </div>
+
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium">
+                                    Portfolio Status
+                                </p>
+
+                                <p class="text-sm font-bold text-slate-900">
+                                    Published & Live
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Features Section -->
+    <section class="py-24 bg-white">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center max-w-3xl mx-auto mb-16">
+
+                <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl">
+                    Everything you need to land the job
+                </h2>
+
+                <p class="mt-4 text-lg text-slate-600">
+                    Headhunter provides powerful tools designed specifically for modern
+                    job seekers to showcase their absolute best.
+                </p>
+
+            </div>
+
+
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <div
+                    class="card bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-lg transition-all">
+
+                    <div class="card-body p-8">
+
+                        <div
+                            class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                            <span class="icon-[lucide--file-text] size-6"></span>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">
+                            Structured CV Builder
+                        </h3>
+
+                        <p class="text-slate-600">
+                            Easily input your education, experience, skills, and
+                            certifications into a clean, pre-structured format. No
+                            formatting headaches.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="card bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-lg transition-all">
+
+                    <div class="card-body p-8">
+
+                        <div
+                            class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                            <span class="icon-[lucide--folder-open] size-6"></span>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">
+                            Document Management
+                        </h3>
+
+                        <p class="text-slate-600">
+                            Upload and securely attach reference letters, degrees, and
+                            project portfolios directly to your profile for employers to
+                            verify.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="card bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-lg transition-all">
+
+                    <div class="card-body p-8">
+
+                        <div
+                            class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                            <span class="icon-[lucide--share-2] size-6"></span>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">
+                            One-Click Sharing
+                        </h3>
+
+                        <p class="text-slate-600">
+                            Generate a unique, mobile-responsive public link to your
+                            portfolio. Share it instantly on LinkedIn, via email, or in
+                            job applications.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- How it Works -->
+    <section class="py-24 bg-slate-900 text-white">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-16">
+
+                <h2 class="text-3xl font-bold sm:text-4xl">
+                    How Headhunter Works
+                </h2>
+
+                <p class="mt-4 text-slate-400">
+                    Four simple steps to a professional online presence.
+                </p>
+
+            </div>
+
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <div class="relative text-center">
+
+                    <div
+                        class="w-16 h-16 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 z-10 relative shadow-lg shadow-blue-900/50">
+                        1
+                    </div>
+
+                    <h4 class="text-lg font-bold mb-2">
+                        Create Account
+                    </h4>
+
+                    <p class="text-sm text-slate-400">
+                        Sign up securely in seconds and access your personal dashboard.
+                    </p>
+
+                </div>
+
+
+                <div class="relative text-center">
+
+                    <div class="hidden lg:block absolute top-8 left-0 w-full h-0.5 bg-slate-800 -z-0"></div>
+
+                    <div
+                        class="w-16 h-16 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 z-10 relative shadow-lg shadow-blue-900/50">
+                        2
+                    </div>
+
+                    <h4 class="text-lg font-bold mb-2">
+                        Build Profile
+                    </h4>
+
+                    <p class="text-sm text-slate-400">
+                        Add your experiences, education, and professional skills.
+                    </p>
+
+                </div>
+
+
+                <div class="relative text-center">
+
+                    <div class="hidden lg:block absolute top-8 left-0 w-full h-0.5 bg-slate-800 -z-0"></div>
+
+                    <div
+                        class="w-16 h-16 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 z-10 relative shadow-lg shadow-blue-900/50">
+                        3
+                    </div>
+
+                    <h4 class="text-lg font-bold mb-2">
+                        Upload Files
+                    </h4>
+
+                    <p class="text-sm text-slate-400">
+                        Attach crucial supporting documents and certifications.
+                    </p>
+
+                </div>
+
+
+                <div class="relative text-center">
+
+                    <div class="hidden lg:block absolute top-8 left-0 w-full h-0.5 bg-slate-800 -z-0"></div>
+
+                    <div
+                        class="w-16 h-16 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6 z-10 relative shadow-lg shadow-blue-900/50">
+                        4
+                    </div>
+
+                    <h4 class="text-lg font-bold mb-2">
+                        Publish & Share
+                    </h4>
+
+                    <p class="text-sm text-slate-400">
+                        Flip the switch to 'live' and get your unique portfolio URL.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Benefits -->
+    <section class="py-24 bg-slate-50">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+                <div>
+
+                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop"
+                        alt="Success in interview" class="rounded-2xl shadow-xl">
+
+                </div>
+
+
+                <div>
+
+                    <h2 class="text-3xl font-bold text-slate-900 mb-6">
+                        Why choose Headhunter?
+                    </h2>
+
+
+                    <div class="space-y-6">
+
+                        <div class="flex gap-4">
+
+                            <div class="flex-shrink-0 mt-1">
+                                <span class="icon-[lucide--shield-check] size-6 text-blue-600"></span>
+                            </div>
+
+                            <div>
+
+                                <h4 class="text-lg font-bold text-slate-900">
+                                    Total Privacy Control
+                                </h4>
+
+                                <p class="text-slate-600">
+                                    Keep your data private while drafting. You decide exactly
+                                    when your portfolio goes live to the public.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="flex gap-4">
+
+                            <div class="flex-shrink-0 mt-1">
+                                <span class="icon-[lucide--globe] size-6 text-blue-600"></span>
+                            </div>
+
+                            <div>
+
+                                <h4 class="text-lg font-bold text-slate-900">
+                                    Always Responsive
+                                </h4>
+
+                                <p class="text-slate-600">
+                                    Your portfolio looks flawless on desktop monitors, tablets,
+                                    and recruiters' mobile phones.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="flex gap-4">
+
+                            <div class="flex-shrink-0 mt-1">
+                                <span class="icon-[lucide--layout-dashboard] size-6 text-blue-600"></span>
+                            </div>
+
+                            <div>
+
+                                <h4 class="text-lg font-bold text-slate-900">
+                                    Centralized Updates
+                                </h4>
+
+                                <p class="text-slate-600">
+                                    Never send an outdated PDF again. Update your Headhunter
+                                    profile once, and your link instantly shows the latest
+                                    version.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CTA -->
+    <section class="py-20 bg-blue-700 text-center px-4">
+
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+            Ready to accelerate your career?
+        </h2>
+
+        <p class="text-blue-100 mb-8 max-w-2xl mx-auto text-lg">
+            Join professionals who are already presenting their best selves online
+            with Headhunter.
+        </p>
+
+        <a href="{{ url_for('register_page' ) }}" type="button"
+            class="cbtn-primary bg-white text-blue-700 hover:bg-slate-50 border-0 text-lg px-8 py-3 shadow-xl">
+            Create Your Free Portfolio
+        </a>
+
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-950 py-12 text-center text-sm">
+
+    <div class="max-w-7xl mx-auto px-4">
+
+        <div class="flex items-center justify-center gap-2 mb-6">
+
+            <span class="icon-[lucide--briefcase] size-6 text-blue-500"></span>
+
+            <span class="text-xl font-bold text-white">
+                Headhunter.
+            </span>
+
+        </div>
+
+
+        <p class="text-slate-500 mb-4">
+            The premier CV portfolio management system for ambitious professionals.
+        </p>
+
+
+        <div class="flex justify-center gap-6 text-slate-400 mb-8">
+
+            <button type="button" class="hover:text-white transition-colors">
+                Privacy Policy
+            </button>
+
+            <button type="button" class="hover:text-white transition-colors">
+                Terms of Service
+            </button>
+
+            <button type="button" class="hover:text-white transition-colors">
+                Contact Support
+            </button>
+
+        </div>
+
+
+        <p class="text-slate-600">
+            © 2026 Headhunter Platform. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+{% endblock %}

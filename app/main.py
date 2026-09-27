@@ -29,7 +29,7 @@ app.add_middleware(
     session_cookie="headhunter_session",
     max_age=60 * 60 * 24,
     same_site="lax",
-    https_only=False,  # True in production with HTTPS
+    https_only=settings.app_env == "production",
 )
 
 app.add_exception_handler(
@@ -49,6 +49,14 @@ app.include_router(router)
 async def home(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="base.html",
+        name="home.html",
         context={"title": "Headhunter"},
+    )
+
+@app.get("/about")
+async def about(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="about.html",
+        context={"title": "About — Headhunter"},
     )

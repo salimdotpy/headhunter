@@ -24,4 +24,7 @@ __all__ = [
     "User",
     "WebsiteContent",
     "PlatformSetting",
+    "PasswordResetToken",
 ]
+
+from app.models.password_reset import PasswordResetToken
