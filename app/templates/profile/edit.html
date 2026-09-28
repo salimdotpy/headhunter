@@ -3,93 +3,282 @@
 {% block title %}Edit Profile — Headhunter{% endblock %}
 
 {% block content %}
-<section>
-    <h1>Edit your profile</h1>
+<section class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl space-y-8">
 
-    <form method="post" action="/profile/edit">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <!-- Page Header -->
+        <header>
+            <p class="mb-2 text-sm font-semibold uppercase tracking-wider text-blue-600">
+                Your profile
+            </p>
 
-        <div>
-            <label for="full_name">Full name</label>
-            <input id="full_name" name="full_name" type="text" maxlength="150"
-                   value="{{ profile.full_name }}" required>
-        </div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Edit your profile
+            </h1>
 
-        <div>
-            <label for="professional_title">Professional title</label>
-            <input id="professional_title" name="professional_title" type="text"
-                   maxlength="200" value="{{ profile.professional_title }}">
-        </div>
+            <p class="mt-2 max-w-2xl text-slate-500">
+                Keep your professional information up to date and choose what appears on your public portfolio.
+            </p>
+        </header>
 
-        <div>
-            <label for="summary">Professional summary</label>
-            <textarea id="summary" name="summary" maxlength="5000">{{ profile.summary }}</textarea>
-        </div>
+        <!-- Profile Form -->
+        <form method="post" action="/profile/edit" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
-        <div>
-            <label for="phone">Phone</label>
-            <input id="phone" name="phone" type="text" maxlength="30"
-                   value="{{ profile.phone }}">
-            <label>
-                <input type="checkbox" name="show_phone" value="true"
-                       {% if profile.show_phone %}checked{% endif %}>
-                Show phone on public portfolio
-            </label>
-        </div>
+            <!-- Basic Information -->
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body p-6 sm:p-8">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-slate-900">
+                            Basic information
+                        </h2>
+                        <p class="mt-1 text-sm text-slate-500">
+                            Tell visitors who you are and what you do.
+                        </p>
+                    </div>
 
-        <div>
-            <label for="location">Location</label>
-            <input id="location" name="location" type="text" maxlength="200"
-                   value="{{ profile.location }}">
-            <label>
-                <input type="checkbox" name="show_location" value="true"
-                       {% if profile.show_location %}checked{% endif %}>
-                Show location on public portfolio
-            </label>
-        </div>
+                    <div class="grid gap-5">
 
-        <div>
-            <label>
-                <input type="checkbox" name="show_email" value="true"
-                       {% if profile.show_email %}checked{% endif %}>
-                Show account email on public portfolio
-            </label>
-        </div>
+                        <!-- Full Name -->
+                        <div class="form-control w-full">
+                            <label for="full_name" class="label">
+                                <span class="label-text font-medium text-slate-700">
+                                    Full name
+                                </span>
+                            </label>
 
-        <div>
-            <label for="website_url">Website URL</label>
-            <input id="website_url" name="website_url" type="url"
-                   value="{{ profile.website_url }}">
-            <label>
-                <input type="checkbox" name="show_website" value="true"
-                       {% if profile.show_website %}checked{% endif %}>
-                Show website on public portfolio
-            </label>
-        </div>
+                            <input id="full_name" name="full_name" type="text" maxlength="150"
+                                value="{{ profile.full_name }}" required autocomplete="name"
+                                class="input input-bordered w-full border-slate-200 bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                        </div>
 
-        <div>
-            <label for="linkedin_url">LinkedIn URL</label>
-            <input id="linkedin_url" name="linkedin_url" type="url"
-                   value="{{ profile.linkedin_url }}">
-            <label>
-                <input type="checkbox" name="show_linkedin" value="true"
-                       {% if profile.show_linkedin %}checked{% endif %}>
-                Show LinkedIn on public portfolio
-            </label>
-        </div>
+                        <!-- Professional Title -->
+                        <div class="form-control w-full">
+                            <label for="professional_title" class="label">
+                                <span class="label-text font-medium text-slate-700">
+                                    Professional title
+                                </span>
+                            </label>
 
-        <div>
-            <label for="github_url">GitHub URL</label>
-            <input id="github_url" name="github_url" type="url"
-                   value="{{ profile.github_url }}">
-            <label>
-                <input type="checkbox" name="show_github" value="true"
-                       {% if profile.show_github %}checked{% endif %}>
-                Show GitHub on public portfolio
-            </label>
-        </div>
+                            <input id="professional_title" name="professional_title" type="text" maxlength="200"
+                                value="{{ profile.professional_title }}" placeholder="e.g. Senior Software Engineer"
+                                class="input input-bordered w-full border-slate-200 bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                        </div>
 
-        <button type="submit">Save profile</button>
-    </form>
+                        <!-- Professional Summary -->
+                        <div class="form-control w-full">
+                            <label for="summary" class="label">
+                                <span class="label-text font-medium text-slate-700">
+                                    Professional summary
+                                </span>
+                            </label>
+
+                            <textarea id="summary" name="summary" maxlength="5000" rows="7"
+                                placeholder="Write a concise overview of your professional background, strengths, and career goals."
+                                class="textarea textarea-bordered w-full border-slate-200 bg-white leading-6 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">{{ profile.summary }}</textarea>
+
+                            <label class="label">
+                                <span class="label-text-alt text-slate-400">
+                                    Tell potential employers what makes you stand out.
+                                </span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Information -->
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body p-6 sm:p-8">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-slate-900">
+                            Contact information
+                        </h2>
+                        <p class="mt-1 text-sm text-slate-500">
+                            Add contact details and control which information is visible publicly.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+
+                        <!-- Phone -->
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50/70 p-5">
+                            <div class="form-control w-full">
+                                <label for="phone" class="label">
+                                    <span class="label-text flex items-center gap-2 font-medium text-slate-700">
+                                        <span class="icon-[lucide--phone] size-4 text-slate-400"></span>
+                                        Phone
+                                    </span>
+                                </label>
+
+                                <input id="phone" name="phone" type="text" maxlength="30" value="{{ profile.phone }}"
+                                    autocomplete="tel" placeholder="+234 800 000 0000"
+                                    class="input input-bordered w-full border-slate-200 bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+
+                            <label class="mt-4 flex cursor-pointer items-center gap-3">
+                                <input type="checkbox" name="show_phone" value="true" {% if profile.show_phone
+                                    %}checked{% endif %} class="checkbox checkbox-primary checkbox-sm">
+                                <span class="text-sm text-slate-600">
+                                    Show phone on public portfolio
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50/70 p-5">
+                            <div class="form-control w-full">
+                                <label for="location" class="label">
+                                    <span class="label-text flex items-center gap-2 font-medium text-slate-700">
+                                        <span class="icon-[lucide--map-pin] size-4 text-slate-400"></span>
+                                        Location
+                                    </span>
+                                </label>
+
+                                <input id="location" name="location" type="text" maxlength="200"
+                                    value="{{ profile.location }}" autocomplete="address-level2"
+                                    placeholder="e.g. Lagos, Nigeria"
+                                    class="input input-bordered w-full border-slate-200 bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+
+                            <label class="mt-4 flex cursor-pointer items-center gap-3">
+                                <input type="checkbox" name="show_location" value="true" {% if profile.show_location
+                                    %}checked{% endif %} class="checkbox checkbox-primary checkbox-sm">
+                                <span class="text-sm text-slate-600">
+                                    Show location on public portfolio
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Account Email -->
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50/70 p-5">
+                            <label class="flex cursor-pointer items-center gap-3">
+                                <input type="checkbox" name="show_email" value="true" {% if profile.show_email
+                                    %}checked{% endif %} class="checkbox checkbox-primary checkbox-sm">
+
+                                <span>
+                                    <span class="flex items-center gap-2 text-sm font-medium text-slate-700">
+                                        <span class="icon-[lucide--mail] size-4 text-slate-400"></span>
+                                        Show account email on public portfolio
+                                    </span>
+
+                                    <span class="mt-1 block text-xs text-slate-400">
+                                        Your account email will be visible to portfolio visitors.
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social & Web Presence -->
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body p-6 sm:p-8">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-slate-900">
+                            Online presence
+                        </h2>
+                        <p class="mt-1 text-sm text-slate-500">
+                            Connect your professional profiles and personal website.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+
+                        <!-- Website -->
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50/70 p-5">
+                            <div class="form-control w-full">
+                                <label for="website_url" class="label">
+                                    <span class="label-text flex items-center gap-2 font-medium text-slate-700">
+                                        <span class="icon-[lucide--globe] size-4 text-slate-400"></span>
+                                        Website URL
+                                    </span>
+                                </label>
+
+                                <input id="website_url" name="website_url" type="url" value="{{ profile.website_url }}"
+                                    placeholder="https://yourwebsite.com"
+                                    class="input input-bordered w-full border-slate-200 bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+
+                            <label class="mt-4 flex cursor-pointer items-center gap-3">
+                                <input type="checkbox" name="show_website" value="true" {% if profile.show_website
+                                    %}checked{% endif %} class="checkbox checkbox-primary checkbox-sm">
+                                <span class="text-sm text-slate-600">
+                                    Show website on public portfolio
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- LinkedIn -->
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50/70 p-5">
+                            <div class="form-control w-full">
+                                <label for="linkedin_url" class="label">
+                                    <span class="label-text flex items-center gap-2 font-medium text-slate-700">
+                                        <span class="icon-[lucide--linkedin] size-4 text-slate-400"></span>
+                                        LinkedIn URL
+                                    </span>
+                                </label>
+
+                                <input id="linkedin_url" name="linkedin_url" type="url"
+                                    value="{{ profile.linkedin_url }}" placeholder="https://linkedin.com/in/yourname"
+                                    class="input input-bordered w-full border-slate-200 bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+
+                            <label class="mt-4 flex cursor-pointer items-center gap-3">
+                                <input type="checkbox" name="show_linkedin" value="true" {% if profile.show_linkedin
+                                    %}checked{% endif %} class="checkbox checkbox-primary checkbox-sm">
+                                <span class="text-sm text-slate-600">
+                                    Show LinkedIn on public portfolio
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- GitHub -->
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50/70 p-5">
+                            <div class="form-control w-full">
+                                <label for="github_url" class="label">
+                                    <span class="label-text flex items-center gap-2 font-medium text-slate-700">
+                                        <span class="icon-[lucide--github] size-4 text-slate-400"></span>
+                                        GitHub URL
+                                    </span>
+                                </label>
+
+                                <input id="github_url" name="github_url" type="url" value="{{ profile.github_url }}"
+                                    placeholder="https://github.com/yourname"
+                                    class="input input-bordered w-full border-slate-200 bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+
+                            <label class="mt-4 flex cursor-pointer items-center gap-3">
+                                <input type="checkbox" name="show_github" value="true" {% if profile.show_github
+                                    %}checked{% endif %} class="checkbox checkbox-primary checkbox-sm">
+                                <span class="text-sm text-slate-600">
+                                    Show GitHub on public portfolio
+                                </span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actions -->
+            <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <a href="/dashboard"
+                    class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary border-0 px-8 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--save] size-4"></span>
+                    Save profile
+                </button>
+            </div>
+
+        </form>
+
+    </div>
 </section>
 {% endblock %}

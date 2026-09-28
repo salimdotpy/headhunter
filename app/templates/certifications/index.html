@@ -1,12 +1,171 @@
 {% extends "base.html" %}
+
 {% block title %}Certifications — Headhunter{% endblock %}
+
 {% block content %}
-<h1>Certifications</h1><p><a href="/dashboard">Dashboard</a> · <a href="/certifications/new">Add certification</a></p>
-{% if records %}{% for record in records %}<article>
-<h2>{{ record.name }}</h2><p>Issued by {{ record.issuer }}</p>
-{% if record.issue_date %}<p>Issued: {{ record.issue_date }}{% endif %}{% if record.expiry_date %} · Expires: {{ record.expiry_date }}{% endif %}</p>
-{% if record.credential_reference %}<p>Credential: {{ record.credential_reference }}</p>{% endif %}
-<a href="/certifications/{{ record.id }}/edit">Edit</a>
-<form method="post" action="/certifications/{{ record.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" onclick="return confirm('Delete this certification?')">Delete</button></form>
-</article>{% endfor %}{% else %}<p>No certifications added yet.</p>{% endif %}
+<div class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+
+        <!-- Header -->
+        <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <div class="mb-3 flex items-center gap-2 text-sm font-medium text-blue-600">
+                    <span class="icon-[lucide--badge-check] size-4"></span>
+                    <span>Your CV</span>
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Certifications
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-slate-600">
+                    Showcase professional certifications, credentials, and qualifications.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-2 sm:flex-row">
+                <a href="/dashboard"
+                    class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                    <span class="icon-[lucide--layout-dashboard] size-4"></span>
+                    Dashboard
+                </a>
+
+                <a href="/certifications/new" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--plus] size-4"></span>
+                    Add certification
+                </a>
+            </div>
+        </div>
+
+        {% if records %}
+
+        <!-- Certifications -->
+        <div class="grid gap-5 sm:grid-cols-2">
+            {% for record in records %}
+
+            <article
+                class="card border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+                <div class="card-body p-6">
+
+                    <!-- Certification Header -->
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--badge-check] size-6"></span>
+                        </div>
+
+                        <div class="min-w-0">
+                            <h2 class="text-lg font-bold leading-snug text-slate-900">
+                                {{ record.name }}
+                            </h2>
+
+                            <div class="mt-2 flex items-center gap-2 text-sm text-slate-600">
+                                <span class="icon-[lucide--building-2] size-4 shrink-0 text-slate-400"></span>
+                                <span>
+                                    Issued by {{ record.issuer }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dates -->
+                    {% if record.issue_date or record.expiry_date %}
+                    <div class="mt-5 flex flex-wrap gap-2">
+
+                        {% if record.issue_date %}
+                        <div class="badge badge-lg gap-2 border border-slate-200 bg-slate-50 text-slate-700">
+                            <span class="icon-[lucide--calendar] size-4 text-slate-500"></span>
+                            <span>
+                                Issued: {{ record.issue_date }}
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        {% if record.expiry_date %}
+                        <div class="badge badge-lg gap-2 border border-slate-200 bg-slate-50 text-slate-700">
+                            <span class="icon-[lucide--calendar-clock] size-4 text-slate-500"></span>
+                            <span>
+                                Expires: {{ record.expiry_date }}
+                            </span>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    {% endif %}
+
+                    <!-- Credential -->
+                    {% if record.credential_reference %}
+                    <div class="mt-5 rounded-lg border border-slate-100 bg-slate-50 p-3">
+                        <div class="flex items-start gap-3">
+                            <span class="icon-[lucide--key-round] mt-0.5 size-4 shrink-0 text-slate-400"></span>
+
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                                    Credential
+                                </p>
+
+                                <p class="mt-1 break-all text-sm font-medium text-slate-700">
+                                    {{ record.credential_reference }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Actions -->
+                    <div class="mt-6 flex gap-2 border-t border-slate-100 pt-4">
+                        <a href="/certifications/{{ record.id }}/edit"
+                            class="btn btn-sm btn-outline flex-1 border-slate-300 bg-white text-slate-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--pencil] size-4"></span>
+                            Edit
+                        </a>
+
+                        <form method="post" action="/certifications/{{ record.id }}/delete" class="flex-1"
+                            onsubmit="return confirm('Delete this certification?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                            <button type="submit"
+                                class="btn btn-sm btn-outline w-full border-red-200 bg-white text-red-600 hover:border-red-300 hover:bg-red-50">
+                                <span class="icon-[lucide--trash-2] size-4"></span>
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </article>
+
+            {% endfor %}
+        </div>
+
+        {% else %}
+
+        <!-- Empty State -->
+        <div class="card border border-dashed border-slate-300 bg-white shadow-sm">
+            <div class="card-body items-center px-6 py-16 text-center sm:px-12">
+
+                <div class="mb-5 flex size-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <span class="icon-[lucide--badge-check] size-8"></span>
+                </div>
+
+                <h2 class="text-xl font-bold text-slate-900">
+                    No certifications added yet
+                </h2>
+
+                <p class="mt-2 max-w-md text-slate-500">
+                    Add your professional certifications and credentials to strengthen your CV.
+                </p>
+
+                <a href="/certifications/new" class="btn btn-primary mt-6 border-0 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--plus] size-4"></span>
+                    Add your first certification
+                </a>
+
+            </div>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
 {% endblock %}

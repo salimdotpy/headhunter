@@ -3,102 +3,338 @@
 {% block title %}Dashboard — Headhunter{% endblock %}
 
 {% block content %}
-<section class="dashboard-page">
-    <header class="page-header">
-        <div>
-            <p class="eyebrow">Your workspace</p>
-            <h1>Welcome, {{ profile.full_name or current_user.email }}</h1>
-            <p>Build, manage, present, and share your professional CV portfolio.</p>
-        </div>
-        <div class="header-actions">
-            <a class="button button-primary" href="/portfolio/preview">Preview portfolio</a>
-            {% if portfolio %}
-                <a class="button" href="/portfolio/{{ portfolio.slug }}" target="_blank" rel="noopener">View public portfolio</a>
-            {% endif %}
-        </div>
-    </header>
+<section class="min-h-screen bg-slate-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-    <div class="dashboard-grid">
-        <section class="panel completion-panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Profile completion</h2>
-                    <p>Complete the key sections of your CV to prepare your portfolio.</p>
-                </div>
-                <strong>{{ completion_percent }}%</strong>
-            </div>
-            <div class="progress-track" aria-label="Profile completion: {{ completion_percent }}%">
-                <div class="progress-value" style="width: {{ completion_percent }}%"></div>
-            </div>
-            <a href="/profile/edit">Edit profile</a>
-        </section>
+        <!-- Page Header -->
+        <header class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+                <p class="mb-2 text-sm font-semibold uppercase tracking-wider text-blue-600">
+                    Your workspace
+                </p>
 
-        <section class="panel publication-panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Publication status</h2>
-                    <p>{% if portfolio and portfolio.is_published %}Your portfolio is publicly available.{% else %}Your portfolio is currently private.{% endif %}</p>
-                </div>
-                <span class="status-badge {% if portfolio and portfolio.is_published %}status-success{% else %}status-muted{% endif %}">
-                    {% if portfolio and portfolio.is_published %}Published{% else %}Unpublished{% endif %}
-                </span>
-            </div>
-            <a href="/portfolio/settings">Manage portfolio</a>
-        </section>
-    </div>
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Welcome, {{ profile.full_name or current_user.email }}
+                </h1>
 
-    <section class="stats-grid" aria-label="CV statistics">
-        <a class="stat-card" href="/education"><span>Education</span><strong>{{ counts.education }}</strong></a>
-        <a class="stat-card" href="/experience"><span>Experience</span><strong>{{ counts.experience }}</strong></a>
-        <a class="stat-card" href="/skills"><span>Skills</span><strong>{{ counts.skills }}</strong></a>
-        <a class="stat-card" href="/certifications"><span>Certifications</span><strong>{{ counts.certifications }}</strong></a>
-        <a class="stat-card" href="/projects"><span>Projects</span><strong>{{ counts.projects }}</strong></a>
-        <a class="stat-card" href="/documents"><span>Documents</span><strong>{{ counts.documents }}</strong></a>
-    </section>
-
-    <div class="dashboard-grid dashboard-grid-bottom">
-        <section class="panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Quick actions</h2>
-                    <p>Jump directly to the part of your portfolio you want to work on.</p>
-                </div>
+                <p class="mt-2 max-w-2xl text-slate-500">
+                    Build, manage, present, and share your professional CV portfolio.
+                </p>
             </div>
-            <div class="quick-actions">
-                <a href="/profile/edit">Edit profile</a>
-                <a href="/education/new">Add education</a>
-                <a href="/experience/new">Add experience</a>
-                <a href="/skills/new">Add skill</a>
-                <a href="/certifications/new">Add certification</a>
-                <a href="/projects/new">Add project</a>
-                <a href="/documents/new">Upload document</a>
-                <a href="/portfolio/preview">Preview portfolio</a>
+
+            <div class="flex flex-col gap-3 sm:flex-row">
+                <a class="btn btn-primary border-0 shadow-lg shadow-blue-500/20" href="/portfolio/preview">
+                    <span class="icon-[lucide--eye] size-4"></span>
+                    Preview portfolio
+                </a>
+
                 {% if portfolio %}
-                    <button type="button" data-copy-link="{{ request.base_url }}portfolio/{{ portfolio.slug }}">Copy portfolio link</button>
+                <a class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50"
+                    href="/portfolio/{{ portfolio.slug }}" target="_blank" rel="noopener">
+                    <span class="icon-[lucide--external-link] size-4"></span>
+                    View public portfolio
+                </a>
                 {% endif %}
             </div>
+        </header>
+
+        <!-- Completion & Publication -->
+        <div class="grid gap-6 lg:grid-cols-2">
+
+            <!-- Profile Completion -->
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <h2 class="card-title text-lg text-slate-900">
+                                Profile completion
+                            </h2>
+                            <p class="mt-1 text-sm leading-6 text-slate-500">
+                                Complete the key sections of your CV to prepare your portfolio.
+                            </p>
+                        </div>
+
+                        <strong class="text-2xl font-bold text-blue-600">
+                            {{ completion_percent }}%
+                        </strong>
+                    </div>
+
+                    <div class="mt-5" role="progressbar" aria-label="Profile completion: {{ completion_percent }}%"
+                        aria-valuenow="{{ completion_percent }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="h-3 w-full overflow-hidden rounded-full bg-slate-100">
+                            <div class="h-full rounded-full bg-blue-600 transition-all duration-500"
+                                style="width: {{ completion_percent }}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions mt-5">
+                        <a href="/profile/edit"
+                            class="link link-primary inline-flex items-center gap-1 text-sm font-semibold no-underline hover:underline">
+                            Edit profile
+                            <span class="icon-[lucide--arrow-right] size-4"></span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Publication Status -->
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <h2 class="card-title text-lg text-slate-900">
+                                Publication status
+                            </h2>
+
+                            <p class="mt-1 text-sm leading-6 text-slate-500">
+                                {% if portfolio and portfolio.is_published %}
+                                Your portfolio is publicly available.
+                                {% else %}
+                                Your portfolio is currently private.
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        {% if portfolio and portfolio.is_published %}
+                        <span class="badge badge-success gap-1 whitespace-nowrap">
+                            <span class="icon-[lucide--globe-2] size-3.5"></span>
+                            Published
+                        </span>
+                        {% else %}
+                        <span class="badge badge-ghost gap-1 whitespace-nowrap">
+                            <span class="icon-[lucide--lock] size-3.5"></span>
+                            Unpublished
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-actions mt-5">
+                        <a href="/portfolio/settings"
+                            class="link link-primary inline-flex items-center gap-1 text-sm font-semibold no-underline hover:underline">
+                            Manage portfolio
+                            <span class="icon-[lucide--arrow-right] size-4"></span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CV Statistics -->
+        <section aria-label="CV statistics">
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+
+                <a href="/education"
+                    class="card border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+                    <div class="card-body items-center p-5 text-center">
+                        <span class="mb-2 flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--graduation-cap] size-5"></span>
+                        </span>
+                        <span class="text-sm font-medium text-slate-500">Education</span>
+                        <strong class="text-2xl font-bold text-slate-900">
+                            {{ counts.education }}
+                        </strong>
+                    </div>
+                </a>
+
+                <a href="/experience"
+                    class="card border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+                    <div class="card-body items-center p-5 text-center">
+                        <span class="mb-2 flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--briefcase-business] size-5"></span>
+                        </span>
+                        <span class="text-sm font-medium text-slate-500">Experience</span>
+                        <strong class="text-2xl font-bold text-slate-900">
+                            {{ counts.experience }}
+                        </strong>
+                    </div>
+                </a>
+
+                <a href="/skills"
+                    class="card border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+                    <div class="card-body items-center p-5 text-center">
+                        <span class="mb-2 flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--sparkles] size-5"></span>
+                        </span>
+                        <span class="text-sm font-medium text-slate-500">Skills</span>
+                        <strong class="text-2xl font-bold text-slate-900">
+                            {{ counts.skills }}
+                        </strong>
+                    </div>
+                </a>
+
+                <a href="/certifications"
+                    class="card border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+                    <div class="card-body items-center p-5 text-center">
+                        <span class="mb-2 flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--badge-check] size-5"></span>
+                        </span>
+                        <span class="text-sm font-medium text-slate-500">Certifications</span>
+                        <strong class="text-2xl font-bold text-slate-900">
+                            {{ counts.certifications }}
+                        </strong>
+                    </div>
+                </a>
+
+                <a href="/projects"
+                    class="card border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+                    <div class="card-body items-center p-5 text-center">
+                        <span class="mb-2 flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--folder-kanban] size-5"></span>
+                        </span>
+                        <span class="text-sm font-medium text-slate-500">Projects</span>
+                        <strong class="text-2xl font-bold text-slate-900">
+                            {{ counts.projects }}
+                        </strong>
+                    </div>
+                </a>
+
+                <a href="/documents"
+                    class="card border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+                    <div class="card-body items-center p-5 text-center">
+                        <span class="mb-2 flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--files] size-5"></span>
+                        </span>
+                        <span class="text-sm font-medium text-slate-500">Documents</span>
+                        <strong class="text-2xl font-bold text-slate-900">
+                            {{ counts.documents }}
+                        </strong>
+                    </div>
+                </a>
+
+            </div>
         </section>
 
-        <section class="panel">
-            <div class="panel-heading">
-                <div>
-                    <h2>Recent activity</h2>
-                    <p>Your latest portfolio actions.</p>
+        <!-- Quick Actions & Recent Activity -->
+        <div class="grid gap-6 lg:grid-cols-2">
+
+            <!-- Quick Actions -->
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body">
+                    <div>
+                        <h2 class="card-title text-lg text-slate-900">
+                            Quick actions
+                        </h2>
+                        <p class="mt-1 text-sm leading-6 text-slate-500">
+                            Jump directly to the part of your portfolio you want to work on.
+                        </p>
+                    </div>
+
+                    <div class="mt-5 grid gap-3 sm:grid-cols-2">
+
+                        <a href="/profile/edit"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--user-pen] size-4"></span>
+                            Edit profile
+                        </a>
+
+                        <a href="/education/new"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--graduation-cap] size-4"></span>
+                            Add education
+                        </a>
+
+                        <a href="/experience/new"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--briefcase-business] size-4"></span>
+                            Add experience
+                        </a>
+
+                        <a href="/skills/new"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--sparkles] size-4"></span>
+                            Add skill
+                        </a>
+
+                        <a href="/certifications/new"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--badge-check] size-4"></span>
+                            Add certification
+                        </a>
+
+                        <a href="/projects/new"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--folder-plus] size-4"></span>
+                            Add project
+                        </a>
+
+                        <a href="/documents/new"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--upload] size-4"></span>
+                            Upload document
+                        </a>
+
+                        <a href="/portfolio/preview"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                            <span class="icon-[lucide--eye] size-4"></span>
+                            Preview portfolio
+                        </a>
+
+                        {% if portfolio %}
+                        <button type="button" data-copy-link="{{ request.base_url }}portfolio/{{ portfolio.slug }}"
+                            class="btn btn-outline justify-start border-slate-200 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 sm:col-span-2">
+                            <span class="icon-[lucide--copy] size-4"></span>
+                            <span data-copy-label>Copy portfolio link</span>
+                        </button>
+                        {% endif %}
+
+                    </div>
                 </div>
-            </div>
-            {% if recent_activity %}
-                <ul class="activity-list">
-                    {% for activity in recent_activity %}
-                        <li>
-                            <strong>{{ activity.description }}</strong>
-                            <time datetime="{{ activity.created_at.isoformat() }}">{{ activity.created_at.strftime('%d %b %Y, %H:%M') }}</time>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body">
+                    <div>
+                        <h2 class="card-title text-lg text-slate-900">
+                            Recent activity
+                        </h2>
+                        <p class="mt-1 text-sm leading-6 text-slate-500">
+                            Your latest portfolio actions.
+                        </p>
+                    </div>
+
+                    {% if recent_activity %}
+                    <ul class="mt-5 divide-y divide-slate-100">
+                        {% for activity in recent_activity %}
+                        <li class="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0">
+                            <div class="flex min-w-0 items-start gap-3">
+                                <span
+                                    class="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                                    <span class="icon-[lucide--activity] size-4"></span>
+                                </span>
+
+                                <div class="min-w-0">
+                                    <strong class="block text-sm font-medium text-slate-800">
+                                        {{ activity.description }}
+                                    </strong>
+
+                                    <time class="mt-1 block text-xs text-slate-400"
+                                        datetime="{{ activity.created_at.isoformat() }}">
+                                        {{ activity.created_at.strftime('%d %b %Y, %H:%M') }}
+                                    </time>
+                                </div>
+                            </div>
                         </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="empty-state">No recent activity yet. Your actions will appear here as you build your portfolio.</p>
-            {% endif %}
-        </section>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div
+                        class="mt-5 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-5 py-8 text-center">
+                        <span
+                            class="mx-auto mb-3 flex size-10 items-center justify-center rounded-full bg-white text-slate-400 shadow-sm">
+                            <span class="icon-[lucide--clock-3] size-5"></span>
+                        </span>
+
+                        <p class="text-sm leading-6 text-slate-500">
+                            No recent activity yet. Your actions will appear here as you build your portfolio.
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+
+        </div>
+
     </div>
 </section>
 {% endblock %}
@@ -108,11 +344,28 @@
     document.querySelectorAll('[data-copy-link]').forEach((button) => {
         button.addEventListener('click', async () => {
             const link = button.dataset.copyLink;
+            const label = button.querySelector('[data-copy-label]');
+            const icon = button.querySelector('span');
+
             try {
                 await navigator.clipboard.writeText(link);
-                const original = button.textContent;
-                button.textContent = 'Link copied';
-                setTimeout(() => { button.textContent = original; }, 1800);
+
+                const original = label.textContent;
+                label.textContent = 'Link copied';
+
+                if (icon) {
+                    icon.classList.remove('icon-[lucide--copy]');
+                    icon.classList.add('icon-[lucide--check]');
+                }
+
+                setTimeout(() => {
+                    label.textContent = original;
+
+                    if (icon) {
+                        icon.classList.remove('icon-[lucide--check]');
+                        icon.classList.add('icon-[lucide--copy]');
+                    }
+                }, 1800);
             } catch {
                 window.prompt('Copy your portfolio link:', link);
             }

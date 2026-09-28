@@ -3,37 +3,221 @@
 {% block title %}Portfolio Settings — Headhunter{% endblock %}
 
 {% block content %}
-<section>
-    <h1>Portfolio Settings</h1>
-    <p>Manage your public portfolio URL and publication status.</p>
+<div class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
 
-    <form method="post" action="/portfolio/settings">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <label for="slug">Portfolio URL</label>
-        <div>
-            <span>/portfolio/</span>
-            <input id="slug" name="slug" value="{{ portfolio.slug }}" required>
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-blue-600">
+                <span class="icon-[lucide--globe-2] size-4"></span>
+                <span>Portfolio</span>
+            </div>
+
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                Portfolio Settings
+            </h1>
+
+            <p class="mt-2 text-slate-600">
+                Manage your public portfolio URL and publication status.
+            </p>
         </div>
-        <button type="submit">Save URL</button>
-    </form>
 
-    <hr>
+        <!-- URL Settings Card -->
+        <div class="card border border-slate-200 bg-white shadow-sm">
+            <div class="card-body p-6 sm:p-8">
 
-    <p><strong>Status:</strong> {% if portfolio.is_published %}Published{% else %}Unpublished{% endif %}</p>
+                <div class="mb-6 flex items-center gap-3 border-b border-slate-100 pb-5">
+                    <div class="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <span class="icon-[lucide--link] size-5"></span>
+                    </div>
 
-    {% if portfolio.is_published %}
-        <p><a href="/portfolio/{{ portfolio.slug }}" target="_blank">View public portfolio</a></p>
-        <form method="post" action="/portfolio/unpublish">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <button type="submit">Unpublish portfolio</button>
-        </form>
-    {% else %}
-        <form method="post" action="/portfolio/publish">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <button type="submit">Publish portfolio</button>
-        </form>
-    {% endif %}
+                    <div>
+                        <h2 class="text-lg font-semibold text-slate-900">
+                            Portfolio URL
+                        </h2>
+                        <p class="text-sm text-slate-500">
+                            Choose the address people will use to access your portfolio.
+                        </p>
+                    </div>
+                </div>
 
-    <p><a href="/portfolio/preview">Preview portfolio</a></p>
-</section>
+                <form method="post" action="/portfolio/settings" class="space-y-6">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                    <div class="form-control">
+                        <label class="label" for="slug">
+                            <span class="label-text font-medium text-slate-700">
+                                Portfolio URL
+                            </span>
+                        </label>
+
+                        <div class="flex flex-col sm:flex-row">
+                            <div
+                                class="flex h-12 items-center rounded-t-lg border border-b-0 border-slate-300 bg-slate-100 px-4 text-sm font-medium text-slate-500 sm:rounded-l-lg sm:rounded-tr-none sm:border-b">
+                                /portfolio/
+                            </div>
+
+                            <input id="slug" name="slug" value="{{ portfolio.slug }}" required
+                                class="input input-bordered h-12 w-full rounded-t-none focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 sm:rounded-l-none sm:rounded-tr-lg sm:rounded-bl-lg"
+                                placeholder="your-name">
+                        </div>
+
+                        <label class="label">
+                            <span class="label-text-alt text-slate-500">
+                                Use a simple, memorable URL for your public portfolio.
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-end border-t border-slate-100 pt-5">
+                        <button type="submit" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                            <span class="icon-[lucide--save] size-4"></span>
+                            Save URL
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Publication Status Card -->
+        <div class="card mt-6 border border-slate-200 bg-white shadow-sm">
+            <div class="card-body p-6 sm:p-8">
+
+                <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="flex size-10 shrink-0 items-center justify-center rounded-xl {% if portfolio.is_published %}bg-emerald-50 text-emerald-600{% else %}bg-amber-50 text-amber-600{% endif %}">
+                            {% if portfolio.is_published %}
+                            <span class="icon-[lucide--globe] size-5"></span>
+                            {% else %}
+                            <span class="icon-[lucide--globe-lock] size-5"></span>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-semibold text-slate-900">
+                                Publication status
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-500">
+                                {% if portfolio.is_published %}
+                                Your portfolio is currently visible to anyone with the public URL.
+                                {% else %}
+                                Your portfolio is currently private and is not publicly accessible.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if portfolio.is_published %}
+                    <span class="badge badge-success gap-1.5 px-3 py-3">
+                        <span class="icon-[lucide--circle-check] size-3.5"></span>
+                        Published
+                    </span>
+                    {% else %}
+                    <span class="badge badge-warning gap-1.5 px-3 py-3">
+                        <span class="icon-[lucide--circle-off] size-3.5"></span>
+                        Unpublished
+                    </span>
+                    {% endif %}
+                </div>
+
+                <!-- Published state -->
+                {% if portfolio.is_published %}
+                <div class="mt-6 rounded-xl border border-emerald-100 bg-emerald-50/70 p-4">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                                Public portfolio
+                            </p>
+
+                            <p class="mt-1 break-all text-sm font-medium text-emerald-900">
+                                /portfolio/{{ portfolio.slug }}
+                            </p>
+                        </div>
+
+                        <a href="/portfolio/{{ portfolio.slug }}" target="_blank" rel="noopener"
+                            class="btn btn-sm border-0 bg-white text-emerald-700 shadow-sm hover:bg-emerald-100">
+                            <span class="icon-[lucide--external-link] size-4"></span>
+                            View public portfolio
+                        </a>
+                    </div>
+                </div>
+
+                <form method="post" action="/portfolio/unpublish" class="mt-5">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                    <button type="submit"
+                        class="btn btn-outline w-full border-red-200 bg-white text-red-600 hover:border-red-300 hover:bg-red-50 sm:w-auto">
+                        <span class="icon-[lucide--eye-off] size-4"></span>
+                        Unpublish portfolio
+                    </button>
+                </form>
+
+                <!-- Unpublished state -->
+                {% else %}
+                <div class="mt-6 rounded-xl border border-amber-100 bg-amber-50/70 p-4">
+                    <div class="flex items-start gap-3">
+                        <span class="mt-0.5 shrink-0 text-amber-600">
+                            <span class="icon-[lucide--eye-off] size-5"></span>
+                        </span>
+
+                        <div>
+                            <p class="font-medium text-amber-900">
+                                Your portfolio is private
+                            </p>
+
+                            <p class="mt-1 text-sm leading-6 text-amber-800">
+                                Publish your portfolio when you're ready for others to access your public profile.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post" action="/portfolio/publish" class="mt-5">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                    <button type="submit" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                        <span class="icon-[lucide--globe] size-4"></span>
+                        Publish portfolio
+                    </button>
+                </form>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="card mt-6 border border-slate-200 bg-white shadow-sm">
+            <div class="card-body p-6 sm:p-8">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                            <span class="icon-[lucide--monitor-play] size-5"></span>
+                        </div>
+
+                        <div>
+                            <h2 class="font-semibold text-slate-900">
+                                Preview your portfolio
+                            </h2>
+
+                            <p class="mt-1 text-sm text-slate-500">
+                                See how your portfolio looks before sharing it publicly.
+                            </p>
+                        </div>
+                    </div>
+
+                    <a href="/portfolio/preview"
+                        class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                        <span class="icon-[lucide--eye] size-4"></span>
+                        Preview portfolio
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 {% endblock %}

@@ -1,14 +1,195 @@
 {% extends "base.html" %}
+
 {% block title %}{{ "Edit Project" if record else "Add Project" }} — Headhunter{% endblock %}
+
 {% block content %}
-<h1>{{ "Edit Project" if record else "Add Project" }}</h1>
-<form method="post" action="{{ action }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-<label>Project title <input name="title" required maxlength="200" value="{{ record.title if record else '' }}"></label>
-<label>Description <textarea name="description" maxlength="5000">{{ record.description if record else '' }}</textarea></label>
-<label>Your role <input name="role" maxlength="200" value="{{ record.role if record else '' }}"></label>
-<label>Technologies / tools <input name="technologies" maxlength="1000" placeholder="e.g. FastAPI, MariaDB, Tailwind CSS" value="{{ record.technologies if record else '' }}"></label>
-<label>Date <input type="date" name="project_date" value="{{ record.project_date if record and record.project_date else '' }}"></label>
-<label>Project link <input type="url" name="project_url" value="{{ record.project_url if record else '' }}"></label>
-<button type="submit">Save project</button> <a href="/projects">Cancel</a>
-</form>
+<div class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-blue-600">
+                <span class="icon-[lucide--folder-kanban] size-4"></span>
+                <span>Your CV</span>
+            </div>
+
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                {{ "Edit Project" if record else "Add Project" }}
+            </h1>
+
+            <p class="mt-2 text-slate-600">
+                Showcase a project and highlight the work, technologies, and results involved.
+            </p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="card border border-slate-200 bg-white shadow-sm">
+            <div class="card-body p-6 sm:p-8">
+
+                <div class="mb-6 flex items-center gap-3 border-b border-slate-100 pb-5">
+                    <div class="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <span class="icon-[lucide--folder-kanban] size-5"></span>
+                    </div>
+
+                    <div>
+                        <h2 class="text-lg font-semibold text-slate-900">
+                            Project details
+                        </h2>
+                        <p class="text-sm text-slate-500">
+                            Add the key information recruiters should know.
+                        </p>
+                    </div>
+                </div>
+
+                <form method="post" action="{{ action }}" class="space-y-6">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                    <!-- Project title -->
+                    <div class="form-control">
+                        <label class="label" for="title">
+                            <span class="label-text font-medium text-slate-700">
+                                Project title
+                            </span>
+                        </label>
+
+                        <div class="relative">
+                            <span
+                                class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                <span class="icon-[lucide--folder] size-4"></span>
+                            </span>
+
+                            <input id="title" name="title" required maxlength="200"
+                                value="{{ record.title if record else '' }}"
+                                class="input input-bordered w-full pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                                placeholder="e.g. Personal Portfolio Platform">
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-control">
+                        <label class="label" for="description">
+                            <span class="label-text font-medium text-slate-700">
+                                Description
+                            </span>
+                        </label>
+
+                        <textarea id="description" name="description" maxlength="5000" rows="6"
+                            class="textarea textarea-bordered min-h-36 w-full resize-y focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                            placeholder="Describe the project, what you built, the problem it solved, and any notable results.">{{ record.description if record else '' }}</textarea>
+
+                        <label class="label">
+                            <span class="label-text-alt text-slate-500">
+                                Keep the description focused on your contribution and impact.
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Your role -->
+                    <div class="form-control">
+                        <label class="label" for="role">
+                            <span class="label-text font-medium text-slate-700">
+                                Your role
+                            </span>
+                        </label>
+
+                        <div class="relative">
+                            <span
+                                class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                <span class="icon-[lucide--user-round] size-4"></span>
+                            </span>
+
+                            <input id="role" name="role" maxlength="200" value="{{ record.role if record else '' }}"
+                                class="input input-bordered w-full pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                                placeholder="e.g. Full-Stack Developer">
+                        </div>
+                    </div>
+
+                    <!-- Technologies -->
+                    <div class="form-control">
+                        <label class="label" for="technologies">
+                            <span class="label-text font-medium text-slate-700">
+                                Technologies / tools
+                            </span>
+                        </label>
+
+                        <div class="relative">
+                            <span
+                                class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                <span class="icon-[lucide--code-2] size-4"></span>
+                            </span>
+
+                            <input id="technologies" name="technologies" maxlength="1000"
+                                value="{{ record.technologies if record else '' }}"
+                                class="input input-bordered w-full pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                                placeholder="e.g. FastAPI, MariaDB, Tailwind CSS">
+                        </div>
+
+                        <label class="label">
+                            <span class="label-text-alt text-slate-500">
+                                Separate technologies or tools with commas.
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Project date -->
+                    <div class="form-control">
+                        <label class="label" for="project_date">
+                            <span class="label-text font-medium text-slate-700">
+                                Date
+                            </span>
+                        </label>
+
+                        <div class="relative">
+                            <span
+                                class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                <span class="icon-[lucide--calendar] size-4"></span>
+                            </span>
+
+                            <input id="project_date" type="date" name="project_date"
+                                value="{{ record.project_date if record and record.project_date else '' }}"
+                                class="input input-bordered w-full pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                        </div>
+                    </div>
+
+                    <!-- Project link -->
+                    <div class="form-control">
+                        <label class="label" for="project_url">
+                            <span class="label-text font-medium text-slate-700">
+                                Project link
+                            </span>
+                        </label>
+
+                        <div class="relative">
+                            <span
+                                class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                <span class="icon-[lucide--external-link] size-4"></span>
+                            </span>
+
+                            <input id="project_url" type="url" name="project_url"
+                                value="{{ record.project_url if record else '' }}"
+                                class="input input-bordered w-full pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                                placeholder="https://example.com/project">
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div
+                        class="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-between">
+                        <a href="/projects"
+                            class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                            <span class="icon-[lucide--arrow-left] size-4"></span>
+                            Cancel
+                        </a>
+
+                        <button type="submit" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                            <span class="icon-[lucide--save] size-4"></span>
+                            Save project
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
 {% endblock %}

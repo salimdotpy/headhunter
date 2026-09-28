@@ -1,21 +1,161 @@
 {% extends "base.html" %}
+
 {% block title %}Education — Headhunter{% endblock %}
+
 {% block content %}
-<h1>Education</h1>
-<p><a href="/dashboard">Dashboard</a> · <a href="/education/new">Add education</a></p>
-{% if records %}
-{% for record in records %}
-<article>
-    <h2>{{ record.qualification }} — {{ record.institution }}</h2>
-    {% if record.field_of_study %}<p>{{ record.field_of_study }}</p>{% endif %}
-    <p>{{ record.start_date or "" }}{% if record.end_date %} — {{ record.end_date }}{% endif %}</p>
-    {% if record.description %}<p>{{ record.description }}</p>{% endif %}
-    <a href="/education/{{ record.id }}/edit">Edit</a>
-    <form method="post" action="/education/{{ record.id }}/delete" style="display:inline">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <button type="submit" onclick="return confirm('Delete this education record?')">Delete</button>
-    </form>
-</article>
-{% endfor %}
-{% else %}<p>No education records yet. Add your education history to build your CV.</p>{% endif %}
+<section class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-5xl space-y-8">
+
+        <!-- Page Header -->
+        <header class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="mb-2 text-sm font-semibold uppercase tracking-wider text-blue-600">
+                    Your CV
+                </p>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Education
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-slate-500">
+                    Manage your academic background and qualifications.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+                <a href="/dashboard"
+                    class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                    <span class="icon-[lucide--layout-dashboard] size-4"></span>
+                    Dashboard
+                </a>
+
+                <a href="/education/new" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--plus] size-4"></span>
+                    Add education
+                </a>
+            </div>
+        </header>
+
+        {% if records %}
+
+        <!-- Education Records -->
+        <div class="space-y-5">
+            {% for record in records %}
+            <article
+                class="card border border-slate-200 bg-white shadow-sm transition hover:border-blue-100 hover:shadow-md">
+                <div class="card-body p-6 sm:p-7">
+
+                    <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+
+                        <!-- Education Details -->
+                        <div class="min-w-0 flex-1">
+
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="hidden shrink-0 sm:flex size-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                                    <span class="icon-[lucide--graduation-cap] size-6"></span>
+                                </div>
+
+                                <div class="min-w-0">
+                                    <h2 class="text-xl font-bold text-slate-900">
+                                        {{ record.qualification }}
+                                    </h2>
+
+                                    <p class="mt-1 flex items-center gap-2 text-sm font-medium text-blue-600">
+                                        <span class="icon-[lucide--building-2] size-4"></span>
+                                        {{ record.institution }}
+                                    </p>
+
+                                    {% if record.field_of_study %}
+                                    <p class="mt-3 flex items-center gap-2 text-sm text-slate-500">
+                                        <span class="icon-[lucide--book-open] size-4 text-slate-400"></span>
+                                        {{ record.field_of_study }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Dates -->
+                            <div
+                                class="mt-5 inline-flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-600">
+                                <span class="icon-[lucide--calendar] size-4 text-slate-400"></span>
+
+                                <span>
+                                    {{ record.start_date or "" }}
+                                    {% if record.end_date %}
+                                    <span class="mx-1 text-slate-300">—</span>
+                                    {{ record.end_date }}
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <!-- Description -->
+                            {% if record.description %}
+                            <div class="mt-5 border-t border-slate-100 pt-5">
+                                <p class="whitespace-pre-line text-sm leading-7 text-slate-600">
+                                    {{ record.description }}
+                                </p>
+                            </div>
+                            {% endif %}
+
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex shrink-0 gap-2 lg:pt-1">
+                            <a href="/education/{{ record.id }}/edit"
+                                class="btn btn-sm btn-outline border-slate-200 bg-white text-slate-600 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                                <span class="icon-[lucide--pencil] size-4"></span>
+                                Edit
+                            </a>
+
+                            <form method="post" action="/education/{{ record.id }}/delete"
+                                onsubmit="return confirm('Delete this education record?')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                                <button type="submit"
+                                    class="btn btn-sm btn-outline border-red-200 bg-white text-red-600 hover:border-red-300 hover:bg-red-50">
+                                    <span class="icon-[lucide--trash-2] size-4"></span>
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        {% else %}
+
+        <!-- Empty State -->
+        <div class="card border border-dashed border-slate-300 bg-white shadow-sm">
+            <div class="card-body items-center px-6 py-16 text-center sm:py-20">
+
+                <div class="mb-5 flex size-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <span class="icon-[lucide--graduation-cap] size-8"></span>
+                </div>
+
+                <h2 class="text-xl font-bold text-slate-900">
+                    No education records yet
+                </h2>
+
+                <p class="mt-2 max-w-md text-sm leading-6 text-slate-500">
+                    Add your education history to build your CV and give potential employers a better understanding of
+                    your academic background.
+                </p>
+
+                <a href="/education/new" class="btn btn-primary mt-6 border-0 px-6 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--plus] size-4"></span>
+                    Add your first education
+                </a>
+
+            </div>
+        </div>
+
+        {% endif %}
+
+    </div>
+</section>
 {% endblock %}

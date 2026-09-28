@@ -1,13 +1,182 @@
 {% extends "base.html" %}
+
 {% block title %}{{ "Edit Certification" if record else "Add Certification" }} — Headhunter{% endblock %}
+
 {% block content %}
-<h1>{{ "Edit Certification" if record else "Add Certification" }}</h1>
-<form method="post" action="{{ action }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-<label>Certification name <input name="name" required maxlength="200" value="{{ record.name if record else '' }}"></label>
-<label>Issuer <input name="issuer" required maxlength="200" value="{{ record.issuer if record else '' }}"></label>
-<label>Issue date <input type="date" name="issue_date" value="{{ record.issue_date if record and record.issue_date else '' }}"></label>
-<label>Expiry date <input type="date" name="expiry_date" value="{{ record.expiry_date if record and record.expiry_date else '' }}"></label>
-<label>Credential/reference <input name="credential_reference" maxlength="200" value="{{ record.credential_reference if record else '' }}"></label>
-<button type="submit">Save certification</button> <a href="/certifications">Cancel</a>
-</form>
+<div class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="mb-3 flex items-center gap-2 text-sm font-medium text-blue-600">
+                <span class="icon-[lucide--badge-check] size-4"></span>
+                <span>Certifications</span>
+            </div>
+
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                {{ "Edit Certification" if record else "Add Certification" }}
+            </h1>
+
+            <p class="mt-2 text-slate-600">
+                {{ "Update your certification details." if record else "Add a professional certification to strengthen
+                your CV." }}
+            </p>
+        </div>
+
+        <!-- Form -->
+        <form method="post" action="{{ action }}" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <!-- Certification Details -->
+            <div class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body p-6 sm:p-8">
+
+                    <div class="mb-6 flex items-center gap-3">
+                        <div class="flex size-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--badge-check] size-5"></span>
+                        </div>
+
+                        <div>
+                            <h2 class="text-lg font-semibold text-slate-900">
+                                Certification details
+                            </h2>
+                            <p class="text-sm text-slate-500">
+                                Add the certification, issuing organization, and credential details.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-5 sm:grid-cols-2">
+
+                        <!-- Certification Name -->
+                        <div class="form-control sm:col-span-2">
+                            <label class="label" for="name">
+                                <span class="label-text font-medium text-slate-700">
+                                    Certification name
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--award] size-4"></span>
+                                </span>
+
+                                <input id="name" name="name" type="text" required maxlength="200"
+                                    value="{{ record.name if record else '' }}"
+                                    placeholder="e.g. AWS Certified Solutions Architect"
+                                    class="input input-bordered w-full pl-10">
+                            </div>
+                        </div>
+
+                        <!-- Issuer -->
+                        <div class="form-control sm:col-span-2">
+                            <label class="label" for="issuer">
+                                <span class="label-text font-medium text-slate-700">
+                                    Issuer
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--building-2] size-4"></span>
+                                </span>
+
+                                <input id="issuer" name="issuer" type="text" required maxlength="200"
+                                    value="{{ record.issuer if record else '' }}" placeholder="e.g. Amazon Web Services"
+                                    class="input input-bordered w-full pl-10">
+                            </div>
+                        </div>
+
+                        <!-- Issue Date -->
+                        <div class="form-control">
+                            <label class="label" for="issue_date">
+                                <span class="label-text font-medium text-slate-700">
+                                    Issue date
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--calendar] size-4"></span>
+                                </span>
+
+                                <input id="issue_date" type="date" name="issue_date"
+                                    value="{{ record.issue_date if record and record.issue_date else '' }}"
+                                    class="input input-bordered w-full pl-10">
+                            </div>
+                        </div>
+
+                        <!-- Expiry Date -->
+                        <div class="form-control">
+                            <label class="label" for="expiry_date">
+                                <span class="label-text font-medium text-slate-700">
+                                    Expiry date
+                                </span>
+
+                                <span class="label-text-alt text-slate-400">
+                                    Optional
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--calendar-clock] size-4"></span>
+                                </span>
+
+                                <input id="expiry_date" type="date" name="expiry_date"
+                                    value="{{ record.expiry_date if record and record.expiry_date else '' }}"
+                                    class="input input-bordered w-full pl-10">
+                            </div>
+                        </div>
+
+                        <!-- Credential Reference -->
+                        <div class="form-control sm:col-span-2">
+                            <label class="label" for="credential_reference">
+                                <span class="label-text font-medium text-slate-700">
+                                    Credential / reference
+                                </span>
+
+                                <span class="label-text-alt text-slate-400">
+                                    Optional
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--key-round] size-4"></span>
+                                </span>
+
+                                <input id="credential_reference" name="credential_reference" type="text" maxlength="200"
+                                    value="{{ record.credential_reference if record else '' }}"
+                                    placeholder="e.g. Credential ID or verification reference"
+                                    class="input input-bordered w-full pl-10">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <a href="/certifications"
+                    class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                    <span class="icon-[lucide--arrow-left] size-4"></span>
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--save] size-4"></span>
+                    Save certification
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
 {% endblock %}

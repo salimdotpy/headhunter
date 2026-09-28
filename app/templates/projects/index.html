@@ -1,15 +1,162 @@
 {% extends "base.html" %}
+
 {% block title %}Projects — Headhunter{% endblock %}
+
 {% block content %}
-<h1>Projects</h1><p><a href="/dashboard">Dashboard</a> · <a href="/projects/new">Add project</a></p>
-{% if records %}{% for record in records %}<article>
-<h2>{{ record.title }}</h2>
-{% if record.role %}<p>Role: {{ record.role }}</p>{% endif %}
-{% if record.project_date %}<p>Date: {{ record.project_date }}</p>{% endif %}
-{% if record.technologies %}<p>Technologies: {{ record.technologies }}</p>{% endif %}
-{% if record.description %}<p>{{ record.description }}</p>{% endif %}
-{% if record.project_url %}<p><a href="{{ record.project_url }}" target="_blank" rel="noopener">Project link</a></p>{% endif %}
-<a href="/projects/{{ record.id }}/edit">Edit</a>
-<form method="post" action="/projects/{{ record.id }}/delete" style="display:inline"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" onclick="return confirm('Delete this project?')">Delete</button></form>
-</article>{% endfor %}{% else %}<p>No projects added yet.</p>{% endif %}
+<div class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+
+        <!-- Header -->
+        <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <div class="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-blue-600">
+                    <span class="icon-[lucide--folder-kanban] size-4"></span>
+                    <span>Your CV</span>
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Projects
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-slate-600">
+                    Showcase projects that demonstrate your experience, technical skills, and achievements.
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:flex-row">
+                <a href="/dashboard"
+                    class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                    <span class="icon-[lucide--layout-dashboard] size-4"></span>
+                    Dashboard
+                </a>
+
+                <a href="/projects/new" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--plus] size-4"></span>
+                    Add project
+                </a>
+            </div>
+        </div>
+
+        {% if records %}
+
+        <!-- Projects -->
+        <div class="grid gap-5 lg:grid-cols-2">
+            {% for record in records %}
+            <article class="card border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+                <div class="card-body p-6">
+
+                    <!-- Project heading -->
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex min-w-0 items-start gap-3">
+                            <div
+                                class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                                <span class="icon-[lucide--folder-kanban] size-5"></span>
+                            </div>
+
+                            <div class="min-w-0">
+                                <h2 class="text-xl font-semibold text-slate-900">
+                                    {{ record.title }}
+                                </h2>
+
+                                {% if record.role %}
+                                <div class="mt-1 flex items-center gap-2 text-sm text-slate-500">
+                                    <span class="icon-[lucide--user-round] size-4"></span>
+                                    <span>{{ record.role }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project metadata -->
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        {% if record.project_date %}
+                        <span class="badge badge-outline gap-1.5 border-slate-200 bg-slate-50 px-3 py-3 text-slate-600">
+                            <span class="icon-[lucide--calendar] size-3.5"></span>
+                            {{ record.project_date }}
+                        </span>
+                        {% endif %}
+
+                        {% if record.technologies %}
+                        <span class="badge badge-outline gap-1.5 border-blue-100 bg-blue-50 px-3 py-3 text-blue-700">
+                            <span class="icon-[lucide--code-2] size-3.5"></span>
+                            {{ record.technologies }}
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    {% if record.description %}
+                    <div class="mt-5">
+                        <p class="whitespace-pre-line text-sm leading-6 text-slate-600">
+                            {{ record.description }}
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Project link -->
+                    {% if record.project_url %}
+                    <div class="mt-5">
+                        <a href="{{ record.project_url }}" target="_blank" rel="noopener"
+                            class="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700 hover:underline">
+                            <span class="icon-[lucide--external-link] size-4"></span>
+                            View project
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Actions -->
+                    <div class="mt-6 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5">
+                        <a href="/projects/{{ record.id }}/edit"
+                            class="btn btn-sm btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                            <span class="icon-[lucide--pencil] size-3.5"></span>
+                            Edit
+                        </a>
+
+                        <form method="post" action="/projects/{{ record.id }}/delete" class="inline"
+                            onsubmit="return confirm('Delete this project?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                            <button type="submit"
+                                class="btn btn-sm btn-outline border-red-200 bg-white text-red-600 hover:border-red-300 hover:bg-red-50">
+                                <span class="icon-[lucide--trash-2] size-3.5"></span>
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        {% else %}
+
+        <!-- Empty state -->
+        <div class="card border border-dashed border-slate-300 bg-white shadow-sm">
+            <div class="card-body items-center px-6 py-14 text-center sm:py-16">
+
+                <div class="mb-5 flex size-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <span class="icon-[lucide--folder-kanban] size-8"></span>
+                </div>
+
+                <h2 class="text-xl font-semibold text-slate-900">
+                    No projects yet
+                </h2>
+
+                <p class="mt-2 max-w-md text-sm leading-6 text-slate-500">
+                    Add projects that highlight your practical experience, technical abilities, and accomplishments.
+                </p>
+
+                <a href="/projects/new" class="btn btn-primary mt-6 border-0 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--plus] size-4"></span>
+                    Add your first project
+                </a>
+            </div>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
 {% endblock %}

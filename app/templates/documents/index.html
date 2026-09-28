@@ -1,34 +1,135 @@
 {% extends "base.html" %}
-{% block title %}Documents — Headhunter{% endblock %}
-{% block content %}
-<section>
-    <div>
-        <h1>Documents</h1>
-        <p>Manage certificates, academic documents, project files, credentials, portfolio files, and photographs.</p>
-        <a href="/documents/new">Upload document</a>
-    </div>
 
-    {% if records %}
-        <div>
+{% block title %}Documents — Headhunter{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-5xl">
+
+        <!-- Header -->
+        <div class="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <div class="mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-blue-600">
+                    <span class="icon-[lucide--files] size-4"></span>
+                    <span>Your CV</span>
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Documents
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-slate-600">
+                    Manage certificates, academic documents, project files, credentials, portfolio files, and
+                    photographs.
+                </p>
+            </div>
+
+            <a href="/documents/new" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                <span class="icon-[lucide--upload] size-4"></span>
+                Upload document
+            </a>
+        </div>
+
+        {% if records %}
+
+        <!-- Documents -->
+        <div class="grid gap-5 sm:grid-cols-2">
+
             {% for record in records %}
-                <article>
-                    <h2>{{ record.original_filename }}</h2>
-                    <p>{{ category_labels[record.category] }} · {{ record.file_size }} bytes</p>
-                    <p>Uploaded {{ record.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
-                    <a href="/documents/{{ record.id }}/download">View / Download</a>
-                    <form method="post" action="/documents/{{ record.id }}/delete">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                        <button type="submit" onclick="return confirm('Delete this document? This cannot be undone.')">Delete</button>
-                    </form>
-                </article>
+            <article class="card border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+                <div class="card-body p-6">
+
+                    <!-- File heading -->
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <span class="icon-[lucide--file-text] size-6"></span>
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <h2 class="break-words text-lg font-semibold leading-6 text-slate-900"
+                                title="{{ record.original_filename }}">
+                                {{ record.original_filename }}
+                            </h2>
+
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <span class="badge badge-outline border-blue-100 bg-blue-50 text-blue-700">
+                                    {{ category_labels[record.category] }}
+                                </span>
+
+                                <span class="badge badge-outline border-slate-200 bg-slate-50 text-slate-600">
+                                    <span class="icon-[lucide--hard-drive] mr-1 size-3.5"></span>
+                                    {{ record.file_size }} bytes
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metadata -->
+                    <div class="mt-5 flex items-center gap-2 text-sm text-slate-500">
+                        <span class="icon-[lucide--clock-3] size-4"></span>
+                        <span>
+                            Uploaded {{ record.created_at.strftime('%Y-%m-%d %H:%M') }}
+                        </span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="mt-6 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-5">
+
+                        <a href="/documents/{{ record.id }}/download"
+                            class="btn btn-sm btn-primary border-0 shadow-sm shadow-blue-500/20">
+                            <span class="icon-[lucide--download] size-3.5"></span>
+                            View / Download
+                        </a>
+
+                        <form method="post" action="/documents/{{ record.id }}/delete" class="inline"
+                            onsubmit="return confirm('Delete this document? This cannot be undone.')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                            <button type="submit"
+                                class="btn btn-sm btn-outline border-red-200 bg-white text-red-600 hover:border-red-300 hover:bg-red-50">
+                                <span class="icon-[lucide--trash-2] size-3.5"></span>
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </article>
             {% endfor %}
+
         </div>
-    {% else %}
-        <div>
-            <h2>No documents yet</h2>
-            <p>Upload your certificates, credentials, project files, or photographs.</p>
-            <a href="/documents/new">Upload your first document</a>
+
+        {% else %}
+
+        <!-- Empty state -->
+        <div class="card border border-dashed border-slate-300 bg-white shadow-sm">
+            <div class="card-body items-center px-6 py-14 text-center sm:py-16">
+
+                <div class="mb-5 flex size-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <span class="icon-[lucide--files] size-8"></span>
+                </div>
+
+                <h2 class="text-xl font-semibold text-slate-900">
+                    No documents yet
+                </h2>
+
+                <p class="mt-2 max-w-md text-sm leading-6 text-slate-500">
+                    Upload your certificates, credentials, project files, or photographs to keep everything organized in
+                    your profile.
+                </p>
+
+                <a href="/documents/new" class="btn btn-primary mt-6 border-0 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--upload] size-4"></span>
+                    Upload your first document
+                </a>
+
+            </div>
         </div>
-    {% endif %}
-</section>
+
+        {% endif %}
+
+    </div>
+</div>
 {% endblock %}

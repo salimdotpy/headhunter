@@ -1,16 +1,191 @@
 {% extends "base.html" %}
+
 {% block title %}{{ "Edit Education" if record else "Add Education" }} — Headhunter{% endblock %}
+
 {% block content %}
-<h1>{{ "Edit Education" if record else "Add Education" }}</h1>
-<form method="post" action="{{ action }}">
-<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-<label>Institution <input name="institution" required maxlength="200" value="{{ record.institution if record else '' }}"></label>
-<label>Qualification / Degree <input name="qualification" required maxlength="200" value="{{ record.qualification if record else '' }}"></label>
-<label>Field of study <input name="field_of_study" maxlength="200" value="{{ record.field_of_study if record else '' }}"></label>
-<label>Start date <input type="date" name="start_date" value="{{ record.start_date if record and record.start_date else '' }}"></label>
-<label>End date <input type="date" name="end_date" value="{{ record.end_date if record and record.end_date else '' }}"></label>
-<label>Description <textarea name="description" maxlength="5000">{{ record.description if record else '' }}</textarea></label>
-<button type="submit">Save education</button>
-<a href="/education">Cancel</a>
-</form>
+<section class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl space-y-8">
+
+        <!-- Page Header -->
+        <header>
+            <p class="mb-2 text-sm font-semibold uppercase tracking-wider text-blue-600">
+                Education
+            </p>
+
+            <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                {{ "Edit Education" if record else "Add Education" }}
+            </h1>
+
+            <p class="mt-2 max-w-2xl text-slate-500">
+                Add your academic background and qualifications to your professional portfolio.
+            </p>
+        </header>
+
+        <!-- Education Form -->
+        <form method="post" action="{{ action }}" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <section class="card border border-slate-200 bg-white shadow-sm">
+                <div class="card-body p-6 sm:p-8">
+
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-slate-900">
+                            Academic details
+                        </h2>
+                        <p class="mt-1 text-sm text-slate-500">
+                            Provide the details of your institution and qualification.
+                        </p>
+                    </div>
+
+                    <div class="grid gap-5">
+
+                        <!-- Institution -->
+                        <div class="form-control w-full">
+                            <label for="institution" class="label">
+                                <span class="label-text font-medium text-slate-700">
+                                    Institution
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--building-2] size-4"></span>
+                                </span>
+
+                                <input id="institution" name="institution" type="text" required maxlength="200"
+                                    value="{{ record.institution if record else '' }}"
+                                    placeholder="e.g. Federal Polytechnic Ede"
+                                    class="input input-bordered w-full border-slate-200 bg-white pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+                        </div>
+
+                        <!-- Qualification -->
+                        <div class="form-control w-full">
+                            <label for="qualification" class="label">
+                                <span class="label-text font-medium text-slate-700">
+                                    Qualification / Degree
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--graduation-cap] size-4"></span>
+                                </span>
+
+                                <input id="qualification" name="qualification" type="text" required maxlength="200"
+                                    value="{{ record.qualification if record else '' }}"
+                                    placeholder="e.g. High National Diploma"
+                                    class="input input-bordered w-full border-slate-200 bg-white pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+                        </div>
+
+                        <!-- Field of Study -->
+                        <div class="form-control w-full">
+                            <label for="field_of_study" class="label">
+                                <span class="label-text font-medium text-slate-700">
+                                    Field of study
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--book-open] size-4"></span>
+                                </span>
+
+                                <input id="field_of_study" name="field_of_study" type="text" maxlength="200"
+                                    value="{{ record.field_of_study if record else '' }}"
+                                    placeholder="e.g. Computer Science"
+                                    class="input input-bordered w-full border-slate-200 bg-white pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                            </div>
+                        </div>
+
+                        <!-- Dates -->
+                        <div class="grid gap-5 sm:grid-cols-2">
+
+                            <!-- Start Date -->
+                            <div class="form-control w-full">
+                                <label for="start_date" class="label">
+                                    <span class="label-text font-medium text-slate-700">
+                                        Start date
+                                    </span>
+                                </label>
+
+                                <div class="relative">
+                                    <span
+                                        class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                        <span class="icon-[lucide--calendar] size-4"></span>
+                                    </span>
+
+                                    <input id="start_date" type="date" name="start_date"
+                                        value="{{ record.start_date if record and record.start_date else '' }}"
+                                        class="input input-bordered w-full border-slate-200 bg-white pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                                </div>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="form-control w-full">
+                                <label for="end_date" class="label">
+                                    <span class="label-text font-medium text-slate-700">
+                                        End date
+                                    </span>
+                                </label>
+
+                                <div class="relative">
+                                    <span
+                                        class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                        <span class="icon-[lucide--calendar-check] size-4"></span>
+                                    </span>
+
+                                    <input id="end_date" type="date" name="end_date"
+                                        value="{{ record.end_date if record and record.end_date else '' }}"
+                                        class="input input-bordered w-full border-slate-200 bg-white pl-10 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-control w-full">
+                            <label for="description" class="label">
+                                <span class="label-text font-medium text-slate-700">
+                                    Description
+                                </span>
+                            </label>
+
+                            <textarea id="description" name="description" maxlength="5000" rows="7"
+                                placeholder="Add relevant details about your studies, achievements, coursework, or activities."
+                                class="textarea textarea-bordered w-full border-slate-200 bg-white leading-6 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">{{ record.description if record else '' }}</textarea>
+
+                            <label class="label">
+                                <span class="label-text-alt text-slate-400">
+                                    Highlight achievements, relevant coursework, or notable activities.
+                                </span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actions -->
+            <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <a href="/education"
+                    class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                    <span class="icon-[lucide--arrow-left] size-4"></span>
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary border-0 px-8 shadow-lg shadow-blue-500/20">
+                    <span class="icon-[lucide--save] size-4"></span>
+                    Save education
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</section>
 {% endblock %}
