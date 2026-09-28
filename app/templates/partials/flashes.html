@@ -1,9 +1,47 @@
 {% if flashes %}
-<div class="space-y-3 mb-6">
+<div class="toast toast-end toast-middle z-[9999] max-w-sm gap-3 p-4">
     {% for flash in flashes %}
-    <div class="alert alert-{{ flash.category }}">
+    <div class="alert alert-{{ flash.category }} shadow-lg">
+        {% if flash.category == "success" %}
+        <span class="icon-[lucide--circle-check] size-5"></span>
+        {% elif flash.category == "error" or flash.category == "danger" %}
+        <span class="icon-[lucide--circle-alert] size-5"></span>
+        {% elif flash.category == "warning" %}
+        <span class="icon-[lucide--triangle-alert] size-5"></span>
+        {% else %}
+        <span class="icon-[lucide--info] size-5"></span>
+        {% endif %}
+
         <span>{{ flash.message }}</span>
+
+        <button type="button" class="btn btn-ghost btn-xs btn-square ml-auto" onclick="this.closest('.alert').remove()"
+            aria-label="Dismiss notification">
+            <span class="icon-[lucide--x] size-4"></span>
+        </button>
     </div>
     {% endfor %}
 </div>
+<!-- <span class="alert-error"></span>
+<span class="alert-success"></span>
+<span class="alert-warning"></span>
+<span class="alert-info"></span> -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toasts = document.querySelectorAll(".toast .alert");
+
+        toasts.forEach((toast, index) => {
+            setTimeout(() => {
+                toast.classList.add(
+                    "opacity-0",
+                    "translate-x-4",
+                    "transition-all",
+                    "duration-300"
+                );
+
+                setTimeout(() => toast.remove(), 300);
+            }, 4000 + (index * 300));
+        });
+    });
+</script>
 {% endif %}

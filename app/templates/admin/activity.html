@@ -1,7 +1,135 @@
 {% extends "base.html" %}
+
 {% block title %}Activity — Admin{% endblock %}
+
 {% block content %}
-<section class="dashboard-page"><header class="page-header"><div><p class="eyebrow">Administration</p><h1>Activity</h1></div></header>
-<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
-<section class="panel"><ul class="activity-list">{% for item in activities %}<li><strong>User {{ item.user_id }} — {{ item.description }}</strong><time>{{ item.created_at.strftime('%d %b %Y, %H:%M') }}</time></li>{% else %}<li>No activity recorded.</li>{% endfor %}</ul></section></section>
+<section class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl space-y-8">
+
+        <!-- Page Header -->
+        <header class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <div class="mb-2 flex items-center gap-2 text-sm font-semibold text-primary">
+                    <span class="icon-[lucide--shield-check] size-4"></span>
+                    Administration
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Activity
+                </h1>
+
+                <p class="mt-2 text-sm leading-6 text-slate-500 sm:text-base">
+                    Review recent activity across the platform.
+                </p>
+            </div>
+
+            <a href="/admin"
+                class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-primary hover:bg-primary hover:text-white">
+                <span class="icon-[lucide--arrow-left] size-4"></span>
+                Dashboard
+            </a>
+        </header>
+
+        <!-- Admin Navigation -->
+        {{admin_navbar(active="activity")}}
+
+        <!-- Activity Panel -->
+        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+            <!-- Panel Header -->
+            <div class="border-b border-slate-100 px-5 py-5 sm:px-6">
+                <div class="flex items-center gap-3">
+                    <div class="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-primary">
+                        <span class="icon-[lucide--activity] size-5"></span>
+                    </div>
+
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">
+                            Platform activity
+                        </h2>
+
+                        <p class="text-sm text-slate-500">
+                            Recent actions performed by users.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {% if activities %}
+
+            <!-- Activity List -->
+            <ul class="divide-y divide-slate-100">
+
+                {% for item in activities %}
+                <li class="flex gap-4 px-5 py-5 transition-colors hover:bg-slate-50 sm:px-6">
+
+                    <!-- Activity Icon -->
+                    <div class="relative shrink-0">
+                        <div class="flex size-10 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+                            <span class="icon-[lucide--history] size-5"></span>
+                        </div>
+
+                        {% if not loop.last %}
+                        <div class="absolute left-1/2 top-10 h-full w-px -translate-x-1/2 bg-slate-200"></div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Activity Details -->
+                    <div class="min-w-0 flex-1 pb-1">
+
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                                <p class="text-sm font-semibold leading-6 text-slate-800">
+                                    User {{ item.user_id }}
+                                </p>
+
+                                <p class="mt-0.5 text-sm leading-6 text-slate-600">
+                                    {{ item.description }}
+                                </p>
+                            </div>
+
+                            <time datetime="{{ item.created_at.isoformat() }}"
+                                class="flex shrink-0 items-center gap-1.5 text-xs font-medium text-slate-400 sm:pt-1">
+                                <span class="icon-[lucide--clock-3] size-3.5"></span>
+                                {{ item.created_at.strftime('%d %b %Y, %H:%M') }}
+                            </time>
+                        </div>
+
+                    </div>
+
+                </li>
+                {% endfor %}
+
+            </ul>
+
+            {% else %}
+
+            <!-- Empty State -->
+            <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+
+                <div class="flex size-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                    <span class="icon-[lucide--activity] size-8"></span>
+                </div>
+
+                <h3 class="mt-5 text-base font-semibold text-slate-800">
+                    No activity recorded
+                </h3>
+
+                <p class="mt-1 max-w-sm text-sm leading-6 text-slate-500">
+                    Platform activity will appear here when users perform actions.
+                </p>
+
+                <a href="/admin" class="btn btn-outline btn-sm mt-5 border-slate-300">
+                    <span class="icon-[lucide--arrow-left] size-4"></span>
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+</section>
 {% endblock %}

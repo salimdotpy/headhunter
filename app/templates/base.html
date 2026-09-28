@@ -1,4 +1,4 @@
-{% from "partials/macros.html" import app_logo %}
+{% from "partials/macros.html" import app_logo, admin_navbar %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +8,7 @@
     <meta name="description" content="Headhunter — create, manage, present, and share your professional CV portfolio.">
     <title>{% block title %}Headhunter{% endblock %}</title>
     <link href="{{ url_for('static', path='/css/app.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', path='images/favicon.png') }}">
     {% block head %}{% endblock %}
 </head>
 
@@ -41,7 +42,7 @@
                 </p>
 
 
-                <div class="flex justify-center gap-6 text-slate-400 mb-8">
+                <div class="hidden justify-center gap-6 text-slate-400 mb-8">
 
                     <button type="button" class="hover:text-white transition-colors">
                         Privacy Policy

@@ -1,9 +1,219 @@
 {% extends "base.html" %}
+
 {% block title %}Settings — Admin{% endblock %}
+
 {% block content %}
-<section class="dashboard-page"><header class="page-header"><div><p class="eyebrow">Administration</p><h1>Settings</h1></div></header>
-<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
-<form class="panel form-stack" method="post" action="/admin/settings"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><h2>Add platform setting</h2><label>Key<input name="key" required maxlength="100"></label><label>Value<input name="value" maxlength="2000"></label><button class="button button-primary">Save setting</button></form>
-{% for item in settings %}<form class="panel form-stack" method="post" action="/admin/settings/{{ item.id }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Key<input name="key" value="{{ item.setting_key }}" required></label><label>Value<input name="value" value="{{ item.setting_value }}"></label><button class="button">Update</button></form>{% else %}<p class="empty-state">No platform settings configured.</p>{% endfor %}
+<section class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl space-y-8">
+
+        <!-- Header -->
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <div class="mb-2 flex items-center gap-2 text-sm font-semibold text-primary">
+                    <span class="icon-[lucide--shield-check] size-4"></span>
+                    Administration
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Settings
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                    Manage platform-wide configuration settings.
+                </p>
+            </div>
+
+            <a href="/dashboard"
+                class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-primary hover:bg-primary hover:text-white">
+                <span class="icon-[lucide--arrow-left] size-4"></span>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Admin Navigation -->
+        {{admin_navbar(active="settings")}}
+
+        <!-- Add Setting -->
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="border-b border-slate-200 bg-slate-50/70 px-5 py-5 sm:px-6">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <span class="icon-[lucide--plus] size-5"></span>
+                    </div>
+
+                    <div>
+                        <h2 class="font-semibold text-slate-900">
+                            Add Platform Setting
+                        </h2>
+                        <p class="text-sm text-slate-500">
+                            Create a new configuration value for the platform.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" action="/admin/settings" class="space-y-6 p-5 sm:p-6">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <div class="grid gap-6 lg:grid-cols-2">
+                    <!-- Key -->
+                    <div class="form-control">
+                        <label class="label" for="new-setting-key">
+                            <span class="label-text font-semibold text-slate-700">
+                                Key
+                            </span>
+                        </label>
+
+                        <div class="relative">
+                            <span
+                                class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                <span class="icon-[lucide--key-round] size-4"></span>
+                            </span>
+
+                            <input id="new-setting-key" name="key" type="text" required maxlength="100"
+                                placeholder="e.g. site_name"
+                                class="input input-bordered w-full border-slate-300 bg-white pl-10 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                        </div>
+                    </div>
+
+                    <!-- Value -->
+                    <div class="form-control">
+                        <label class="label" for="new-setting-value">
+                            <span class="label-text font-semibold text-slate-700">
+                                Value
+                            </span>
+                        </label>
+
+                        <div class="relative">
+                            <span
+                                class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                <span class="icon-[lucide--text] size-4"></span>
+                            </span>
+
+                            <input id="new-setting-value" name="value" type="text" maxlength="2000"
+                                placeholder="Enter setting value"
+                                class="input input-bordered w-full border-slate-300 bg-white pl-10 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end border-t border-slate-200 pt-6">
+                    <button type="submit" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                        <span class="icon-[lucide--save] size-4"></span>
+                        Save Setting
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Existing Settings -->
+        <div class="space-y-5">
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="icon-[lucide--sliders-horizontal] size-5 text-primary"></span>
+                    <h2 class="text-xl font-bold text-slate-900">
+                        Platform Settings
+                    </h2>
+                </div>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    Update existing configuration values.
+                </p>
+            </div>
+
+            {% for item in settings %}
+            <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <div class="border-b border-slate-200 bg-slate-50/70 px-5 py-4 sm:px-6">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
+                            <span class="icon-[lucide--settings-2] size-4"></span>
+                        </div>
+
+                        <div class="min-w-0">
+                            <p class="truncate font-semibold text-slate-900">
+                                {{ item.setting_key }}
+                            </p>
+                            <p class="text-xs text-slate-500">
+                                Platform configuration
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post" action="/admin/settings/{{ item.id }}" class="space-y-6 p-5 sm:p-6">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                    <div class="grid gap-6 lg:grid-cols-2">
+                        <!-- Key -->
+                        <div class="form-control">
+                            <label class="label" for="setting-key-{{ item.id }}">
+                                <span class="label-text font-semibold text-slate-700">
+                                    Key
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--key-round] size-4"></span>
+                                </span>
+
+                                <input id="setting-key-{{ item.id }}" name="key" type="text" required
+                                    value="{{ item.setting_key }}"
+                                    class="input input-bordered w-full border-slate-300 bg-white pl-10 text-slate-900 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            </div>
+                        </div>
+
+                        <!-- Value -->
+                        <div class="form-control">
+                            <label class="label" for="setting-value-{{ item.id }}">
+                                <span class="label-text font-semibold text-slate-700">
+                                    Value
+                                </span>
+                            </label>
+
+                            <div class="relative">
+                                <span
+                                    class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                                    <span class="icon-[lucide--text] size-4"></span>
+                                </span>
+
+                                <input id="setting-value-{{ item.id }}" name="value" type="text"
+                                    value="{{ item.setting_value }}"
+                                    class="input input-bordered w-full border-slate-300 bg-white pl-10 text-slate-900 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end border-t border-slate-200 pt-5">
+                        <button type="submit"
+                            class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-primary hover:bg-primary hover:text-white">
+                            <span class="icon-[lucide--save] size-4"></span>
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <!-- Empty State -->
+            <div class="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center shadow-sm">
+                <div class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                    <span class="icon-[lucide--settings-2] size-7"></span>
+                </div>
+
+                <h3 class="mt-5 text-lg font-semibold text-slate-900">
+                    No platform settings configured
+                </h3>
+
+                <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+                    Add your first platform setting using the form above.
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
 </section>
 {% endblock %}

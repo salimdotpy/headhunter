@@ -1,11 +1,169 @@
 {% extends "base.html" %}
+
 {% block title %}Website Content — Admin{% endblock %}
+
 {% block content %}
-<section class="form-page"><h1>{% if record %}Edit{% else %}Add{% endif %} Website Content</h1>
-<form class="panel form-stack" method="post" action="{{ action }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-<label>Content key<input name="key" required maxlength="100" value="{{ record.content_key if record else '' }}"></label>
-<label>Title<input name="title" maxlength="200" value="{{ record.title if record else '' }}"></label>
-<label>Body<textarea name="body" rows="12" maxlength="10000">{{ record.body if record else '' }}</textarea></label>
-<label><input type="checkbox" name="is_published" value="true" {% if not record or record.is_published %}checked{% endif %}> Published</label>
-<button class="button button-primary" type="submit">Save</button></form></section>
+<section class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl space-y-8">
+
+        <!-- Header -->
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <div class="mb-2 flex items-center gap-2 text-sm font-semibold text-primary">
+                    <span class="icon-[lucide--file-pen-line] size-4"></span>
+                    Website Content
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    {% if record %}Edit{% else %}Add{% endif %} Website Content
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                    {% if record %}
+                    Update the selected website content and publication status.
+                    {% else %}
+                    Create new content for your website.
+                    {% endif %}
+                </p>
+            </div>
+
+            <a href="/admin/content"
+                class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-primary hover:bg-primary hover:text-white">
+                <span class="icon-[lucide--arrow-left] size-4"></span>
+                Back to Content
+            </a>
+        </div>
+
+        <!-- Form -->
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="border-b border-slate-200 bg-slate-50/70 px-5 py-5 sm:px-6">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <span class="icon-[lucide--file-text] size-5"></span>
+                    </div>
+
+                    <div>
+                        <h2 class="font-semibold text-slate-900">
+                            Content Details
+                        </h2>
+                        <p class="text-sm text-slate-500">
+                            Configure the content key, title, body, and publication status.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" action="{{ action }}" class="space-y-6 p-5 sm:p-6">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <!-- Content Key -->
+                <div class="form-control">
+                    <label class="label" for="content-key">
+                        <span class="label-text font-semibold text-slate-700">
+                            Content key
+                        </span>
+                    </label>
+
+                    <div class="relative">
+                        <span class="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400">
+                            <span class="icon-[lucide--key-round] size-4"></span>
+                        </span>
+
+                        <input id="content-key" name="key" type="text" required maxlength="100"
+                            value="{{ record.content_key if record else '' }}" placeholder="e.g. about, homepage_intro"
+                            class="input input-bordered w-full border-slate-300 bg-white pl-10 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                    </div>
+
+                    <label class="label">
+                        <span class="label-text-alt text-slate-500">
+                            A unique identifier used to reference this content.
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Title -->
+                <div class="form-control">
+                    <label class="label" for="content-title">
+                        <span class="label-text font-semibold text-slate-700">
+                            Title
+                        </span>
+                    </label>
+
+                    <div class="relative">
+                        <span class="pointer-events-none absolute left-3 top-3 z-10 text-slate-400">
+                            <span class="icon-[lucide--heading] size-4"></span>
+                        </span>
+
+                        <input id="content-title" name="title" type="text" maxlength="200"
+                            value="{{ record.title if record else '' }}" placeholder="Enter a title"
+                            class="input input-bordered w-full border-slate-300 bg-white pl-10 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="form-control">
+                    <label class="label" for="content-body">
+                        <span class="label-text font-semibold text-slate-700">
+                            Body
+                        </span>
+                    </label>
+
+                    <div class="relative">
+                        <span class="pointer-events-none absolute left-3 top-3 z-10 text-slate-400">
+                            <span class="icon-[lucide--align-left] size-4"></span>
+                        </span>
+
+                        <textarea id="content-body" name="body" rows="12" maxlength="10000"
+                            placeholder="Enter the website content..."
+                            class="textarea textarea-bordered min-h-64 w-full resize-y border-slate-300 bg-white pl-10 pt-3 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">{{ record.body if record else '' }}</textarea>
+                    </div>
+
+                    <label class="label">
+                        <span class="label-text-alt text-slate-500">
+                            Maximum 10,000 characters.
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Publication Status -->
+                <div class="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
+                    <label class="flex cursor-pointer items-start gap-3">
+                        <input type="checkbox" name="is_published" value="true" class="checkbox checkbox-primary mt-0.5"
+                            {% if not record or record.is_published %}checked{% endif %}>
+
+                        <span class="flex-1">
+                            <span class="block font-semibold text-slate-800">
+                                Published
+                            </span>
+                            <span class="mt-1 block text-sm leading-5 text-slate-500">
+                                Make this content available on the public website.
+                            </span>
+                        </span>
+
+                        <span
+                            class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white text-slate-500">
+                            <span class="icon-[lucide--globe-2] size-4"></span>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
+                    <a href="/admin/content"
+                        class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50">
+                        <span class="icon-[lucide--x] size-4"></span>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary border-0 shadow-lg shadow-blue-500/20">
+                        <span class="icon-[lucide--save] size-4"></span>
+                        {% if record %}Save Changes{% else %}Create Content{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
 {% endblock %}

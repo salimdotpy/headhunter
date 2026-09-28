@@ -1,7 +1,206 @@
 {% extends "base.html" %}
+
 {% block title %}Portfolios — Admin{% endblock %}
+
 {% block content %}
-<section class="dashboard-page"><header class="page-header"><div><p class="eyebrow">Administration</p><h1>Portfolios</h1></div></header>
-<nav class="admin-nav"><a href="/admin">Dashboard</a><a href="/admin/users">Users</a><a href="/admin/portfolios">Portfolios</a><a href="/admin/content">Website Content</a><a href="/admin/activity">Activity</a><a href="/admin/settings">Settings</a></nav>
-<section class="panel"><div class="table-wrap"><table><thead><tr><th>Owner ID</th><th>Slug</th><th>Status</th><th>Updated</th><th>Public</th></tr></thead><tbody>{% for p in portfolios %}<tr><td>{{ p.user_id }}</td><td>{{ p.slug }}</td><td>{% if p.is_published %}Published{% else %}Unpublished{% endif %}</td><td>{{ p.updated_at.strftime('%d %b %Y, %H:%M') }}</td><td>{% if p.is_published %}<a href="/portfolio/{{ p.slug }}" target="_blank" rel="noopener">View</a>{% else %}Private{% endif %}</td></tr>{% else %}<tr><td colspan="5">No portfolios found.</td></tr>{% endfor %}</tbody></table></div></section></section>
+<section class="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl space-y-8">
+
+        <!-- Page Header -->
+        <header class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <div class="mb-2 flex items-center gap-2 text-sm font-semibold text-primary">
+                    <span class="icon-[lucide--shield-check] size-4"></span>
+                    Administration
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+                    Portfolios
+                </h1>
+
+                <p class="mt-2 text-sm leading-6 text-slate-500 sm:text-base">
+                    Monitor user portfolios and their publication status.
+                </p>
+            </div>
+
+            <a href="/admin"
+                class="btn btn-outline border-slate-300 bg-white text-slate-700 hover:border-primary hover:bg-primary hover:text-white">
+                <span class="icon-[lucide--arrow-left] size-4"></span>
+                Dashboard
+            </a>
+        </header>
+
+        <!-- Admin Navigation -->
+        {{admin_navbar(active="portfolios")}}
+
+        <!-- Portfolios -->
+        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+            <!-- Section Header -->
+            <div
+                class="flex flex-col gap-3 border-b border-slate-100 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <div class="flex items-center gap-3">
+                    <div class="flex size-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                        <span class="icon-[lucide--briefcase-business] size-5"></span>
+                    </div>
+
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">
+                            User portfolios
+                        </h2>
+
+                        <p class="text-sm text-slate-500">
+                            View portfolio publication and update information.
+                        </p>
+                    </div>
+                </div>
+
+                <span class="badge badge-ghost gap-1.5 px-3 py-3 text-slate-500">
+                    <span class="icon-[lucide--globe-2] size-3.5"></span>
+                    Portfolio directory
+                </span>
+            </div>
+
+            {% if portfolios %}
+
+            <!-- Responsive Table -->
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+
+                    <thead>
+                        <tr
+                            class="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wider text-slate-500">
+                            <th class="px-5 py-4 font-semibold sm:px-6">
+                                Owner ID
+                            </th>
+
+                            <th class="px-5 py-4 font-semibold sm:px-6">
+                                Slug
+                            </th>
+
+                            <th class="px-5 py-4 font-semibold sm:px-6">
+                                Status
+                            </th>
+
+                            <th class="px-5 py-4 font-semibold sm:px-6">
+                                Updated
+                            </th>
+
+                            <th class="px-5 py-4 text-right font-semibold sm:px-6">
+                                Public
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for p in portfolios %}
+
+                        <tr class="border-b border-slate-100 transition-colors last:border-0 hover:bg-slate-50">
+
+                            <!-- Owner -->
+                            <td class="px-5 py-4 sm:px-6">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="flex size-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+                                        <span class="icon-[lucide--user-round] size-4"></span>
+                                    </div>
+
+                                    <span class="font-medium text-slate-700">
+                                        {{ p.user_id }}
+                                    </span>
+                                </div>
+                            </td>
+
+                            <!-- Slug -->
+                            <td class="px-5 py-4 sm:px-6">
+                                <div class="flex items-center gap-2">
+                                    <span class="icon-[lucide--link-2] size-4 text-slate-400"></span>
+
+                                    <code
+                                        class="rounded-lg bg-slate-100 px-2.5 py-1 text-sm font-medium text-slate-700">
+                                        /portfolio/{{ p.slug }}
+                                    </code>
+                                </div>
+                            </td>
+
+                            <!-- Status -->
+                            <td class="px-5 py-4 sm:px-6">
+                                {% if p.is_published %}
+
+                                <span class="badge gap-1.5 bg-emerald-50 text-emerald-700">
+                                    <span class="icon-[lucide--circle-check] size-3.5"></span>
+                                    Published
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge gap-1.5 bg-slate-100 text-slate-500">
+                                    <span class="icon-[lucide--lock] size-3.5"></span>
+                                    Unpublished
+                                </span>
+
+                                {% endif %}
+                            </td>
+
+                            <!-- Updated -->
+                            <td class="px-5 py-4 text-sm text-slate-500 sm:px-6">
+                                <div class="flex items-center gap-2 whitespace-nowrap">
+                                    <span class="icon-[lucide--clock-3] size-4 text-slate-400"></span>
+                                    {{ p.updated_at.strftime('%d %b %Y, %H:%M') }}
+                                </div>
+                            </td>
+
+                            <!-- Public -->
+                            <td class="px-5 py-4 text-right sm:px-6">
+                                {% if p.is_published %}
+
+                                <a href="/portfolio/{{ p.slug }}" target="_blank" rel="noopener"
+                                    class="btn btn-outline btn-sm border-emerald-200 bg-white text-emerald-600 hover:border-emerald-600 hover:bg-emerald-600 hover:text-white">
+                                    <span class="icon-[lucide--external-link] size-4"></span>
+                                    View
+                                </a>
+
+                                {% else %}
+
+                                <span class="badge badge-ghost gap-1.5 text-slate-400">
+                                    <span class="icon-[lucide--eye-off] size-3.5"></span>
+                                    Private
+                                </span>
+
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            {% else %}
+
+            <!-- Empty State -->
+            <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+
+                <div class="flex size-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                    <span class="icon-[lucide--briefcase-business] size-8"></span>
+                </div>
+
+                <h3 class="mt-5 text-base font-semibold text-slate-800">
+                    No portfolios found
+                </h3>
+
+                <p class="mt-1 max-w-sm text-sm leading-6 text-slate-500">
+                    User portfolios will appear here once they are created.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+</section>
 {% endblock %}
