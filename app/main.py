@@ -4,7 +4,11 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi.staticfiles import StaticFiles # Import StaticFiles
 
 from app.core.config import get_settings, BASE_DIR
-from app.exceptions.handler import authentication_exception_handler, authorization_exception_handler
+from app.exceptions.handler import (
+    authentication_exception_handler,
+    authorization_exception_handler,
+    internal_server_error_handler,
+)
 from app.exceptions.auth import AuthenticationError
 from app.exceptions.base import AuthorizationError
 from app.core.templates import templates
@@ -39,6 +43,10 @@ app.add_exception_handler(
 app.add_exception_handler(
     AuthorizationError,
     authorization_exception_handler,
+)
+app.add_exception_handler(
+    Exception,
+    internal_server_error_handler,
 )
 
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")

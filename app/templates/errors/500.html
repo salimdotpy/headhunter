@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Something went wrong — Headhunter{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center px-4">
+    <div class="max-w-lg w-full text-center">
+        <div class="mb-6">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-error/10 text-error">
+                <span class="iconify text-3xl" data-icon="lucide:server-crash"></span>
+            </div>
+        </div>
+
+        <p class="text-sm font-semibold uppercase tracking-wider text-base-content/60">
+            Error 500
+        </p>
+
+        <h1 class="mt-2 text-3xl font-bold">
+            Something went wrong
+        </h1>
+
+        <p class="mt-4 text-base-content/70">
+            We couldn't complete your request right now.
+            Please try again in a moment.
+        </p>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+            <button type="button" onclick="history.back()" class="btn btn-outline">
+                <span class="iconify" data-icon="lucide:arrow-left"></span>
+                Go back
+            </button>
+
+            <a href="/" class="btn btn-primary">
+                <span class="iconify" data-icon="lucide:house"></span>
+                Return home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
